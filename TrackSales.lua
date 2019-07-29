@@ -3,8 +3,8 @@ TrackSales = LibStub("AceAddon-3.0"):NewAddon("TrackSales", "AceConsole-3.0", "A
 
 function TrackSales:OnInitialize()	
 
-	self:Hook("TakeInboxMoney", true)
-	self:Hook("AutoLootMailItem", true)
+	self:SecureHook("TakeInboxMoney")
+	self:SecureHook("AutoLootMailItem")
 
 	if not TrackSalesDB then
 		self:Print("is null")
