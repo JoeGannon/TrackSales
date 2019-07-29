@@ -6,7 +6,6 @@ function TrackSales:OnInitialize()
 	self:Hook("TakeInboxMoney", true)
 	self:Hook("AutoLootMailItem", true)
 
-
 	if not TrackSalesDB then
 		self:Print("is null")
 
@@ -66,7 +65,14 @@ function TrackSales:LookupProfessions()
 	local sec3Name = self:GetProfessionName(sec3)
 	local sec4Name = self:GetProfessionName(sec4)
 
-	return prof1Name, prof2Name, sec1Name, sec2Name, sec3Name, sec4Name
+	return {
+		{ Name = prof1Name, IsPrimary = true },
+		{ Name = prof2Name, IsPrimary = true },
+		{ Name = sec1Name, IsPrimary = false },
+		{ Name = sec2Name, IsPrimary = false },
+		{ Name = sec3Name, IsPrimary = false },
+		{ Name = sec4Name, IsPrimary = false },
+	}
 end
 
 function TrackSales:GetProfessionName(index)
@@ -79,44 +85,33 @@ function TrackSales:GetProfessionName(index)
 	end
 end
 
-function TrackSales:SetDefaults()
-	local prof1, prof2, sec1, sec2, sec3, sec4 = self:LookupProfessions()
+function TrackSales:PrintMoney()
+	local res = GetCoinTextureString(10000)
 
-	local people = {
+local res2 = GetCoinTextureString(500050)
+
+local res3 = GetCoinTextureString(123456)
+
+	self:Print(res)
+	self:Print(res2)
+	self:Print(res3)
+end
+
+function TrackSales:SetDefaults()
+	local professions = self:LookupProfessions()
+
+	local db = {
 		Professions = {	}	 
 	 }
 
-	 people.Professions = {
-		{
-			name = "Fred",
-			address = "16 Long Street",
-			phone = "123456"
-	   }
-	  
-		--  {
-		-- 	name = "Wilma",
-		-- 	address = "16 Long Street",
-		-- 	phone = "123456"
-		--  },
-	  
-		--  {
-		-- 	name = "Barney",
-		-- 	address = "17 Long Street",
-		-- 	phone = "123457"
-		--  } 	
-		
-	 }
+	for index, value in ipairs(professions) do 
+		if value.Name then
+			table.insert(db.Professions, value)
+		end
+	end
 
-	 local wilma = {
-		name = "Wilma",
-		address = "16 Long Street",
-		phone = "123456"
-	 }
-
-	 table.insert(people.Professions, wilma)
-
-	for index, value in ipairs(people.Professions) do 
-		self:Print(tostring(index).." : "..value.name)
+	for index, value in ipairs(db.Professions) do 
+		self:Print(tostring(index).." : "..value.Name.." "..tostring(value.IsPrimary))
 	end
 
 end
