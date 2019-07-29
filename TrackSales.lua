@@ -79,6 +79,7 @@ end
 
 function TrackSales:LookupProfessions()
 
+	--todo check how many items classic returns
 	local prof1, prof2, sec1, sec2, sec3, sec4 = GetProfessions()	
 	
 	local prof1Name = self:GetProfessionName(prof1)
