@@ -18,7 +18,14 @@ function TrackSales:TakeInboxMoney(...)
 
 	if invoiceType and invoiceType == "seller" then
 		self:Print("invoiceType, itemName, playerName, bid, buyout, deposit, consignment - ", invoiceType, itemName, playerName, bid, buyout, deposit, consignment)
+	else 
+
+		local _, _, sender, subject, money = GetInboxHeaderInfo(mailIndex);
+
+		self:Print(sender, subject, money)
 	end
+
+
 end 
 
 
