@@ -8,7 +8,7 @@ function TrackSales:OnInitialize()
 
 	if not TrackSalesDB then
 		self:Print("is null")
-
+		self:SetDefaults()
 	else 
 		self:Print("is not null")
 	end 
@@ -33,26 +33,49 @@ function TrackSales:TakeInboxMoney(...)
 	end
 end 
 
-
 function TrackSales:AutoLootMailItem(...)
 	self:Print("Auto Loot Mail Item")
 	self:TakeInboxMoney(...)
 end 
 
-function TrackSales:Debug(var)
+function TrackSales:AddGold(profession, gold)
 
-	TrackSalesDB = var
+	for index, value in ipairs(TrackSalesDB.Professions) do 
+		 if value.Name == profession then
+			value.GoldMade = value.GoldMade + gold
+			return
+		 end
+	end
 
-  local prof1, prof2, sec1, sec2, sec3, sec4 = self:LookupProfessions()
-  
-  self:Print(prof1, prof2, sec1, sec2, sec3, sec4)
-end 
+	self:Print("Profession Not Found "..profession)
+end
+
+function TrackSales:SubtractGold(profession, gold)
+
+	self:AddGold(profession, -gold)
+end
 
 function TrackSales:CV(...)
 
 	TrackSalesDB = nil
 
 end 
+
+function TrackSales:SetDefaults()
+	
+	local professions = self:LookupProfessions()
+
+	TrackSalesDB = {
+		Professions = {	}	 
+	 }
+
+	for index, value in ipairs(professions) do 
+		if value.Name then
+			table.insert(TrackSalesDB.Professions, value)
+		end
+	end
+
+end
 
 function TrackSales:LookupProfessions()
 
@@ -66,12 +89,12 @@ function TrackSales:LookupProfessions()
 	local sec4Name = self:GetProfessionName(sec4)
 
 	return {
-		{ Name = prof1Name, IsPrimary = true },
-		{ Name = prof2Name, IsPrimary = true },
-		{ Name = sec1Name, IsPrimary = false },
-		{ Name = sec2Name, IsPrimary = false },
-		{ Name = sec3Name, IsPrimary = false },
-		{ Name = sec4Name, IsPrimary = false },
+		{ Name = prof1Name, GoldMade = 0, IsPrimary = true },
+		{ Name = prof2Name, GoldMade = 0, IsPrimary = true },
+		{ Name = sec1Name,  GoldMade = 0, IsPrimary = false },
+		{ Name = sec2Name,  GoldMade = 0, IsPrimary = false },
+		{ Name = sec3Name,  GoldMade = 0, IsPrimary = false },
+		{ Name = sec4Name,  GoldMade = 0, IsPrimary = false },
 	}
 end
 
@@ -85,33 +108,9 @@ function TrackSales:GetProfessionName(index)
 	end
 end
 
-function TrackSales:PrintMoney()
-	local res = GetCoinTextureString(10000)
-
-local res2 = GetCoinTextureString(500050)
-
-local res3 = GetCoinTextureString(123456)
-
-	self:Print(res)
-	self:Print(res2)
-	self:Print(res3)
-end
-
-function TrackSales:SetDefaults()
-	local professions = self:LookupProfessions()
-
-	local db = {
-		Professions = {	}	 
-	 }
-
-	for index, value in ipairs(professions) do 
-		if value.Name then
-			table.insert(db.Professions, value)
-		end
+function TrackSales:PrintSales()
+	for index, value in ipairs(TrackSalesDB.Professions) do 
+	    local coinTexture = GetCoinTextureString(value.GoldMade)
+		self:Print(value.Name.."       "..coinTexture..tostring(value.IsPrimary))
 	end
-
-	for index, value in ipairs(db.Professions) do 
-		self:Print(tostring(index).." : "..value.Name.." "..tostring(value.IsPrimary))
-	end
-
 end
