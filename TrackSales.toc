@@ -9,3 +9,10 @@ embeds.xml
 TrackSales.lua
 Database.lua
 Helpers.lua
+ProfessionItems\Alchemy.lua
+ProfessionItems\Blacksmith.lua
+ProfessionItems\Cooking.lua
+ProfessionItems\Enchanting.lua
+ProfessionItems\Engineering.lua
+ProfessionItems\LeatherWorking.lua
+ProfessionItems\Tailoring.lua

@@ -1,7 +1,9 @@
 TrackSales = LibStub("AceAddon-3.0"):NewAddon("TrackSales", "AceConsole-3.0", "AceHook-3.0")
 
-function TrackSales:OnInitialize()	
+local _, ts = ...
 
+function TrackSales:OnInitialize()	
+	
 	TrackSales:RegisterChatCommand("ts", "SlashCommands")
 
 	self:SecureHook("TakeInboxMoney")
@@ -13,6 +15,38 @@ function TrackSales:OnInitialize()
 	else 
 		self:Print("is not null")
 	end 	
+end
+
+function TrackSales:PrintItems()
+	for index, value in ipairs(ts.alchemyItems) do 
+		self:Print(value)
+	end
+
+	for index, value in ipairs(ts.blacksmithItems) do 
+		self:Print(value)
+	end
+
+	for index, value in ipairs(ts.cookingItems) do 
+		self:Print(value)
+	end
+
+	for index, value in ipairs(ts.enchantingItems) do 
+		self:Print(value)
+	end
+
+	for index, value in ipairs(ts.engineeringItems) do 
+		self:Print(value)
+	end
+
+	for index, value in ipairs(ts.leatherworkingItems) do 
+		self:Print(value)
+	end
+
+	for index, value in ipairs(ts.tailoringItems) do 
+		self:Print(value)
+	end
+
+	self:Print('done')
 end
 
 function TrackSales:SlashCommands(args)
