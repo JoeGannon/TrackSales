@@ -2,10 +2,7 @@ TrackSales = LibStub("AceAddon-3.0"):NewAddon("TrackSales", "AceConsole-3.0", "A
 
 local _, ts = ...
 
-function TrackSales:OnInitialize()		
-
-	self:SecureHook("TakeInboxMoney")
-	self:SecureHook("AutoLootMailItem")
+function TrackSales:OnInitialize()			
 
 	if not TrackSalesDB then
 		self:Print("is null")
@@ -14,8 +11,16 @@ function TrackSales:OnInitialize()
 		self:Print("is not null")
 	end 	
 
+	self:SecureHook("TakeInboxMoney")
+	self:SecureHook("AutoLootMailItem")
+
 	TrackSales:RegisterChatCommand("ts", "SlashCommands")
 	TrackSales:RegisterChatCommand("tracksales", "SlashCommands")
+
+	local frame = CreateFrame("Frame")
+	frame:RegisterEvent("LEARNED_SPELL_IN_TAB")	
+	frame:SetScript("OnEvent", function(this, event, ...)
+		TrackSales[event](TrackSales, ...) end)
 end
 
 function TrackSales:TakeInboxMoney(...)
@@ -40,6 +45,14 @@ end
 function TrackSales:AutoLootMailItem(...)
 	self:TakeInboxMoney(...)
 end 
+
+function TrackSales:LEARNED_SPELL_IN_TAB(...)
+	local spellId = ...
+
+	local skillName = GetSpellInfo(spellId)	
+
+	TrackSales.db:TryAddNewProfession(skillName)	
+end
 
 function TrackSales:SlashCommands(args)
 
@@ -115,15 +128,26 @@ function TrackSales:IsValidCommand(args)
 	return true
 end
 
-function TrackSales:PrintSales()
-	for index, value in ipairs(TrackSalesDB.Professions) do 
-	    local coinTexture = GetCoinTextureString(value.GoldMade)
-		self:Print(value.Name.."       "..coinTexture)
+function TrackSales:PrintSales()	
+	
+	if TrackSalesDB and TrackSalesDB.Professions then 
+		for index, value in ipairs(TrackSalesDB.Professions) do 
+			local coinTexture = GetCoinTextureString(value.GoldMade)
+			self:Print(value.Name.."       "..coinTexture)
+		end
+		return
 	end
+
+	self:Print("You have no professions learned. Go learn some or add them via [insert command]")	
 end
 
 function TrackSales:PrintIndexes()
-	for index, value in ipairs(TrackSalesDB.Professions) do 
-		self:Print(tostring(index).."  "..value.Name)
+	if TrackSalesDB and TrackSalesDB.Professions then 
+		for index, value in ipairs(TrackSalesDB.Professions) do 
+			self:Print(tostring(index).."  "..value.Name)
+		end
+	return 
 	end
+
+	self:Print("You have no professions learned. Go learn some or add them via [insert command]")
 end

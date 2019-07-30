@@ -39,6 +39,49 @@ function TrackSales.db:SetGold(profession, gold)
    self:Print("Profession Not Found "..profession)
 end
 
+function TrackSales.db:TryAddNewProfession(skillName)
+	
+	if TrackSalesDB and TrackSalesDB.Professions then
+		for index, value in ipairs(TrackSalesDB.Professions) do 
+			if value.Name == skillName then
+				return 
+			end 
+		end
+	end
+	
+	local professions = {
+		"Alchemy",
+		"Blacksmithing",
+		"Enchanting",
+		"Engineering",
+		"Herbalism Skills",
+		"Leatherworking",
+		"Mining Skills",
+		"Skinning",
+		"Tailoring",
+		"Cooking",
+		"First Aid",
+		"Fishing"
+	}
+
+	for index, value in ipairs(professions) do
+		if value == skillName then			
+
+			local isPrimary = not (skillName == "Cooking" or skillName == "Fishing" or skillName == "First Aid")	
+			
+			if (string.match(skillName, "Skills")) then			
+				skillName = string.sub(skillName, 0, string.len(skillName) - 7)				
+			end
+
+			local profession = { Name = skillName, GoldMade = 0, IsPrimary = isPrimary }
+
+			table.insert(TrackSalesDB.Professions, profession)
+
+			self:Print("Now tracking "..profession.Name)
+		end	
+	end	
+end
+
 function TrackSales.db:SetDefaults()
 	
 	local professions = self:LookupProfessions()
@@ -109,5 +152,7 @@ end
 function TrackSales.db:Clear()
 
 	TrackSalesDB = nil
+
+	self:Print("Database cleared")
 
 end 
