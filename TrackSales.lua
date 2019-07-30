@@ -2,9 +2,7 @@ TrackSales = LibStub("AceAddon-3.0"):NewAddon("TrackSales", "AceConsole-3.0", "A
 
 local _, ts = ...
 
-function TrackSales:OnInitialize()	
-	
-	TrackSales:RegisterChatCommand("ts", "SlashCommands")
+function TrackSales:OnInitialize()		
 
 	self:SecureHook("TakeInboxMoney")
 	self:SecureHook("AutoLootMailItem")
@@ -15,7 +13,32 @@ function TrackSales:OnInitialize()
 	else 
 		self:Print("is not null")
 	end 	
+
+	TrackSales:RegisterChatCommand("ts", "SlashCommands")
 end
+
+function TrackSales:TakeInboxMoney(...)
+	local mailIndex  = ...
+
+	local invoiceType, itemName, playerName, bid, buyout, deposit, consignment = GetInboxInvoiceInfo(mailIndex)
+
+	if invoiceType and invoiceType == "seller" then
+
+		TrackSales.Database:AddGold("Mining", bid)
+	else 
+
+		local _, _, sender, subject, money = GetInboxHeaderInfo(mailIndex)
+
+		--assume it's a COD
+		if money > 0  then 
+			self:Print(sender, subject, money)
+		end
+	end
+end 
+
+function TrackSales:AutoLootMailItem(...)
+	self:TakeInboxMoney(...)
+end 
 
 function TrackSales:SlashCommands(args)
 
@@ -86,29 +109,6 @@ function TrackSales:IsValidCommand(args)
 
 	return true
 end
-
-function TrackSales:TakeInboxMoney(...)
-	local mailIndex  = ...
-
-	local invoiceType, itemName, playerName, bid, buyout, deposit, consignment = GetInboxInvoiceInfo(mailIndex)
-
-	if invoiceType and invoiceType == "seller" then
-
-		TrackSales.Database:AddGold("Mining", bid)
-	else 
-
-		local _, _, sender, subject, money = GetInboxHeaderInfo(mailIndex)
-
-		--assume it's a COD
-		if money > 0  then 
-			self:Print(sender, subject, money)
-		end
-	end
-end 
-
-function TrackSales:AutoLootMailItem(...)
-	self:TakeInboxMoney(...)
-end 
 
 function TrackSales:PrintSales()
 	for index, value in ipairs(TrackSalesDB.Professions) do 
