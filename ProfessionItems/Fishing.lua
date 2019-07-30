@@ -1,0 +1,31 @@
+local _, ts = ...
+
+ts.fishingItems = {
+    "Raw Brilliant Smallfish",
+    "Raw Slitherskin Mackerel",
+    "Soft Frenzy Flesh",
+    "Raw Longjaw Mud Snapper",
+    "Raw Loch Frenzy",
+    "Raw Rainbow Fin Albacore",
+    "Deviate Fish",
+    "Raw Bristle Whisker Catfish",
+    "Raw Rockscale Cod",
+    "Raw Mithril Head Trout",
+    "Raw Greater Sagefish",
+    "Raw Glossy Mightfish",
+    "Raw Spotted Yellowtail",
+    "Raw Sagefish",
+    "Raw Redgill",
+    "Winter Squid",
+    "Raw Summer Bass",
+    "Raw Nightfin Snapper",
+    "Raw Sunscale Salmon",
+    "Darkclaw Lobster",
+    "Large Raw Mightfish",
+    "Raw Whitescale Salmon",
+    "Oily Blackmouth",
+    "Firefin Snapper",
+    "Stonescale Eel",
+    "Rockhide Strongfish",
+    "Steelscale Crushfish"
+}

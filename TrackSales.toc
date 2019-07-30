@@ -14,5 +14,10 @@ ProfessionItems\Blacksmith.lua
 ProfessionItems\Cooking.lua
 ProfessionItems\Enchanting.lua
 ProfessionItems\Engineering.lua
+ProfessionItems\FirstAid.lua
+ProfessionItems\Fishing.lua
+ProfessionItems\Herbalism.lua
 ProfessionItems\LeatherWorking.lua
+ProfessionItems\Mining.lua
+ProfessionItems\Skinning.lua
 ProfessionItems\Tailoring.lua

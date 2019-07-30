@@ -2,11 +2,6 @@
 local _, ts = ...
 
 ts.alchemyItems = {
-"Alchemist",
-"Alchemy",
-"Alchemy",
-"Alchemy",
-"Alchemy",
 "Arcane Elixir",
 "Blackmouth Oil",
 "Catseye Elixir",

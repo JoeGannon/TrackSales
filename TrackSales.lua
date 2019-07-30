@@ -17,38 +17,6 @@ function TrackSales:OnInitialize()
 	end 	
 end
 
-function TrackSales:PrintItems()
-	for index, value in ipairs(ts.alchemyItems) do 
-		self:Print(value)
-	end
-
-	for index, value in ipairs(ts.blacksmithItems) do 
-		self:Print(value)
-	end
-
-	for index, value in ipairs(ts.cookingItems) do 
-		self:Print(value)
-	end
-
-	for index, value in ipairs(ts.enchantingItems) do 
-		self:Print(value)
-	end
-
-	for index, value in ipairs(ts.engineeringItems) do 
-		self:Print(value)
-	end
-
-	for index, value in ipairs(ts.leatherworkingItems) do 
-		self:Print(value)
-	end
-
-	for index, value in ipairs(ts.tailoringItems) do 
-		self:Print(value)
-	end
-
-	self:Print('done')
-end
-
 function TrackSales:SlashCommands(args)
 
 	local arg1, arg2, arg3, arg4 = TrackSales:GetArgs(args, 4)
