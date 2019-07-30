@@ -70,8 +70,19 @@ function TrackSales:SlashCommands(args)
 		return 
 	end
 
+	--/ts p a Mining
+	if (arg1 == "p" or arg1 == "profession") and ts:IsProfessionCommand(arg2) and arg3 then
+		if ts:IsAddCommand(arg2) then
+			TrackSales.db:TryAddNewProfession(arg3, true)
+		end
+		if ts:IsRemoveCommand(arg2) then
+			TrackSales.db:RemoveProfession(arg3)
+		end
+		return 
+	end
+
 	--/ts c 1 a 705025
-	if self:IsValidCommand(args) then		
+	if self:IsValidConfigCommand(args) then		
 		local profession = TrackSales.db:FindProfession(arg2)		
 		local cmd = arg3
 		local gold = arg4
@@ -102,7 +113,7 @@ function TrackSales:SlashCommands(args)
 	end
 end
 
-function TrackSales:IsValidCommand(args)
+function TrackSales:IsValidConfigCommand(args)
 	
 	local option, arg2, arg3, arg4 = TrackSales:GetArgs(args, 4)
 
@@ -111,7 +122,8 @@ function TrackSales:IsValidCommand(args)
 	local gold = tonumber(arg4)
  
 	if not ts:IsConfigCommand(option)  then
-		self:Print("Invalid option! Did you mean config (c)?")
+		self:Print("Invalid Command!")
+		self:Print(option, arg2, arg3, arg4)
 		return false
 	end 
 
@@ -138,7 +150,7 @@ function TrackSales:PrintSales()
 		return
 	end
 
-	self:Print("You have no professions learned. Go learn some or add them via [insert command]")	
+	self:Print("You have no professions learned. Go learn some or add them via /ts profession add ProfesionName")	
 end
 
 function TrackSales:PrintIndexes()
@@ -149,5 +161,5 @@ function TrackSales:PrintIndexes()
 	return 
 	end
 
-	self:Print("You have no professions learned. Go learn some or add them via [insert command]")
+	self:Print("You have no professions learned. Go learn some or add them via /ts profession add ProfesionName")
 end

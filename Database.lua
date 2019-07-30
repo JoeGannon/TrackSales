@@ -39,7 +39,22 @@ function TrackSales.db:SetGold(profession, gold)
    self:Print("Profession Not Found "..profession)
 end
 
-function TrackSales.db:TryAddNewProfession(skillName)
+local professions = {
+	"Alchemy",
+	"Blacksmithing",
+	"Enchanting",
+	"Engineering",
+	"Herbalism Skills",
+	"Leatherworking",
+	"Mining Skills",
+	"Skinning",
+	"Tailoring",
+	"Cooking",
+	"First Aid",
+	"Fishing"
+}
+
+function TrackSales.db:TryAddNewProfession(skillName, log)
 	
 	if TrackSalesDB and TrackSalesDB.Professions then
 		for index, value in ipairs(TrackSalesDB.Professions) do 
@@ -48,21 +63,8 @@ function TrackSales.db:TryAddNewProfession(skillName)
 			end 
 		end
 	end
-	
-	local professions = {
-		"Alchemy",
-		"Blacksmithing",
-		"Enchanting",
-		"Engineering",
-		"Herbalism Skills",
-		"Leatherworking",
-		"Mining Skills",
-		"Skinning",
-		"Tailoring",
-		"Cooking",
-		"First Aid",
-		"Fishing"
-	}
+
+	skillName = self:FirstAidHack(skillName)
 
 	for index, value in ipairs(professions) do
 		if value == skillName then			
@@ -78,8 +80,38 @@ function TrackSales.db:TryAddNewProfession(skillName)
 			table.insert(TrackSalesDB.Professions, profession)
 
 			self:Print("Now tracking "..profession.Name)
+			return
 		end	
 	end	
+
+	if log then
+		self:Print("Profession not found "..skillName.."(professions are case sensitive)")
+	end
+end
+
+function TrackSales.db:RemoveProfession(profession)	
+ 	profession = self:FirstAidHack(profession)
+
+		if TrackSalesDB and TrackSalesDB.Professions then
+			for index, value in ipairs(TrackSalesDB.Professions) do
+				if (value.Name == profession) then 
+					table.remove(TrackSalesDB.Professions, index)
+					self:Print(profession.." removed")
+					return
+				end
+			end
+		end
+
+	self:Print("Profession not found "..profession)
+end
+
+--hack to allow /ts p a FirstAid
+--First Aid is parsed as 2 arguments
+function TrackSales.db:FirstAidHack(arg)	
+	if arg == "FirstAid" then
+		arg = "First Aid"
+	end
+	return arg
 end
 
 function TrackSales.db:SetDefaults()
