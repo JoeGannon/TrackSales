@@ -15,6 +15,7 @@ function TrackSales:OnInitialize()
 	end 	
 
 	TrackSales:RegisterChatCommand("ts", "SlashCommands")
+	TrackSales:RegisterChatCommand("tracksales", "SlashCommands")
 end
 
 function TrackSales:TakeInboxMoney(...)
