@@ -14,6 +14,7 @@ end
 
 function TrackSales.db:SubtractGold(profession, gold)
 
+	--todo there's a bug when gold goes below 0
 	self:AddGold(profession, -gold)
 end
 
