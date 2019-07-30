@@ -1,18 +1,18 @@
 
-TrackSales.Helpers = { }
+local _, ts = ...
 
-function TrackSales.Helpers.IsConfigCommand(arg)
+function ts:IsConfigCommand(arg)
     return arg == "c" or arg == "config"
 end 
 
-function TrackSales.Helpers.IsAddCommand(arg)
+function ts:IsAddCommand(arg)
     return arg == "a" or arg == "add"
 end 
 
-function TrackSales.Helpers.IsSubtractCommand(arg)
+function ts:IsSubtractCommand(arg)
     return arg == "s" or arg == "subtract"
 end 
 
-function TrackSales.Helpers.IsSetCommand(arg)
+function ts:IsSetCommand(arg)
     return arg == "set"
 end 

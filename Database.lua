@@ -1,6 +1,6 @@
-TrackSales.Database = TrackSales:NewModule("DB", "AceConsole-3.0")
+TrackSales.db = TrackSales:NewModule("DB", "AceConsole-3.0")
 
-function TrackSales.Database:AddGold(profession, gold)
+function TrackSales.db:AddGold(profession, gold)
 
 	for index, value in ipairs(TrackSalesDB.Professions) do 
 		 if value.Name == profession then
@@ -12,12 +12,12 @@ function TrackSales.Database:AddGold(profession, gold)
 	self:Print("Profession Not Found "..profession)
 end
 
-function TrackSales.Database:SubtractGold(profession, gold)
+function TrackSales.db:SubtractGold(profession, gold)
 
 	self:AddGold(profession, -gold)
 end
 
-function TrackSales.Database:SetGold(profession, gold)
+function TrackSales.db:SetGold(profession, gold)
 
 	for index, value in ipairs(TrackSalesDB.Professions) do 
 		if value.Name == profession then
@@ -29,7 +29,7 @@ function TrackSales.Database:SetGold(profession, gold)
    self:Print("Profession Not Found "..profession)
 end
 
-function TrackSales.Database:SetDefaults()
+function TrackSales.db:SetDefaults()
 	
 	local professions = self:LookupProfessions()
 
@@ -42,11 +42,9 @@ function TrackSales.Database:SetDefaults()
 			table.insert(TrackSalesDB.Professions, value)
 		end
 	end
-
-
 end
 
-function TrackSales.Database:LookupProfessions()
+function TrackSales.db:LookupProfessions()
 
 	--todo check how many items classic returns
 	local prof1, prof2, sec1, sec2, sec3, sec4 = GetProfessions()	
@@ -68,8 +66,8 @@ function TrackSales.Database:LookupProfessions()
 	}
 end
 
-function TrackSales.Database:GetProfessionName(index)
-	if (index) then
+function TrackSales.db:GetProfessionName(index)
+	if index then
 		local name = GetProfessionInfo(index)
 		
 		return name
@@ -78,11 +76,11 @@ function TrackSales.Database:GetProfessionName(index)
 	end
 end
 
-function TrackSales.Database:FindProfession(idx)
+function TrackSales.db:FindProfession(idx)
 	local val = ""
 	
 	for index, value in ipairs(TrackSalesDB.Professions) do 
-	   if (index == tonumber(idx)) then
+	   if index == tonumber(idx) then
 			val = value.Name
 	   end
 	end
@@ -90,7 +88,7 @@ function TrackSales.Database:FindProfession(idx)
 	return val
 end
 
-function TrackSales.Database:MaxIndex()	
+function TrackSales.db:MaxIndex()	
 	local i = 0
 	for index, value in ipairs(TrackSalesDB.Professions) do 
 		i = i + 1
@@ -98,7 +96,7 @@ function TrackSales.Database:MaxIndex()
 	return i
 end
 
-function TrackSales.Database:CV(...)
+function TrackSales.db:Clear(...)
 
 	TrackSalesDB = nil
 

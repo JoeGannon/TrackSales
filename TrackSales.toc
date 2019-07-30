@@ -3,21 +3,21 @@
 ## Title: TrackSales
 ## Notes: Track Gold made through Professions or Class Abilities from Auction House and Trades
 ## Author: Joe Gannon
-##SavedVariablesPerCharacter: TrackSalesDB
+## SavedVariablesPerCharacter: TrackSalesDB
 
 embeds.xml
 TrackSales.lua
 Database.lua
 Helpers.lua
-ProfessionItems\Alchemy.lua
-ProfessionItems\Blacksmith.lua
-ProfessionItems\Cooking.lua
-ProfessionItems\Enchanting.lua
-ProfessionItems\Engineering.lua
-ProfessionItems\FirstAid.lua
-ProfessionItems\Fishing.lua
-ProfessionItems\Herbalism.lua
-ProfessionItems\LeatherWorking.lua
-ProfessionItems\Mining.lua
-ProfessionItems\Skinning.lua
-ProfessionItems\Tailoring.lua
+Items\Alchemy.lua
+Items\Blacksmith.lua
+Items\Cooking.lua
+Items\Enchanting.lua
+Items\Engineering.lua
+Items\FirstAid.lua
+Items\Fishing.lua
+Items\Herbalism.lua
+Items\LeatherWorking.lua
+Items\Mining.lua
+Items\Skinning.lua
+Items\Tailoring.lua

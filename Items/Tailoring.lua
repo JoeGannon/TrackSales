@@ -2,7 +2,7 @@
 local _, ts = ...
 
 ts.tailoringItems = {
-    "Admiral",
+"Admiral",
 "Argent Boots",
 "Argent Shoulders",
 "Azure Shoulders",

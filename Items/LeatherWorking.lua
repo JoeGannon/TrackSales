@@ -1,7 +1,7 @@
 local _, ts = ...
 
 ts.leatherworkingItems = {
-    "Barbaric Belt",
+"Barbaric Belt",
 "Barbaric Bracers",
 "Barbaric Gloves",
 "Barbaric Harness",

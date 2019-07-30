@@ -9,7 +9,7 @@ function TrackSales:OnInitialize()
 
 	if not TrackSalesDB then
 		self:Print("is null")
-		TrackSales.Database:SetDefaults()
+		TrackSales.db:SetDefaults()
 	else 
 		self:Print("is not null")
 	end 	
@@ -24,7 +24,7 @@ function TrackSales:TakeInboxMoney(...)
 
 	if invoiceType and invoiceType == "seller" then
 
-		TrackSales.Database:AddGold("Mining", bid)
+		TrackSales.db:AddGold("Mining", bid)
 	else 
 
 		local _, _, sender, subject, money = GetInboxHeaderInfo(mailIndex)
@@ -58,25 +58,25 @@ function TrackSales:SlashCommands(args)
 
 	--/ts c 1 a 705025
 	if self:IsValidCommand(args) then		
-		local profession = TrackSales.Database:FindProfession(arg2)		
+		local profession = TrackSales.db:FindProfession(arg2)		
 		local cmd = arg3
 		local gold = arg4
 
-		if TrackSales.Helpers.IsAddCommand(cmd) then 			
+		if ts:IsAddCommand(cmd) then 			
 
-			TrackSales.Database:AddGold(profession, gold)
+			TrackSales.db:AddGold(profession, gold)
 			self:Print("Added "..GetCoinTextureString(gold).." to "..profession)		
 		end
 
-		if TrackSales.Helpers.IsSubtractCommand(cmd) then 			
+		if ts:IsSubtractCommand(cmd) then 			
 		
-			TrackSales.Database:SubtractGold(profession, gold)
+			TrackSales.db:SubtractGold(profession, gold)
 			self:Print("Subtracted "..GetCoinTextureString(gold).." from "..profession)
 		end		
 
-		if TrackSales.Helpers.IsSetCommand(cmd) then 			
+		if ts:IsSetCommand(cmd) then 			
 		
-			TrackSales.Database:SetGold(profession, gold)
+			TrackSales.db:SetGold(profession, gold)
 			self:Print("Set "..profession.." to "..GetCoinTextureString(gold))
 		end		
 
@@ -88,11 +88,11 @@ function TrackSales:IsValidCommand(args)
 	
 	local option, arg2, arg3, arg4 = TrackSales:GetArgs(args, 4)
 
-	local maxIndex = TrackSales.Database:MaxIndex()
-	local idx = tonumber(arg2)	
+	local maxIndex = TrackSales.db:MaxIndex()
+	local idx = tonumber(arg2)
 	local gold = tonumber(arg4)
  
-	if not TrackSales.Helpers.IsConfigCommand(option)  then
+	if not ts:IsConfigCommand(option)  then
 		self:Print("Invalid option! Did you mean config (c)?")
 		return false
 	end 
@@ -102,7 +102,7 @@ function TrackSales:IsValidCommand(args)
 		return false
 	end
 
-	if not (arg3 and (TrackSales.Helpers.IsAddCommand(arg3) or TrackSales.Helpers.IsSubtractCommand(arg3) or TrackSales.Helpers.IsSetCommand(arg3))) then
+	if not (arg3 and (ts:IsAddCommand(arg3) or ts:IsSubtractCommand(arg3) or ts:IsSetCommand(arg3))) then
 		self:Print("Invalid Operation! Only add (a), subtract (s), and set are supported")
 		return false
 	end	
