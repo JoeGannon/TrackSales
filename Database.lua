@@ -3,8 +3,18 @@ TrackSales.db = TrackSales:NewModule("DB", "AceConsole-3.0")
 function TrackSales.db:AddGold(profession, gold)
 
 	for index, value in ipairs(TrackSalesDB.Professions) do 
+
 		 if value.Name == profession then
-			value.GoldMade = value.GoldMade + gold
+
+			local goldMade = value.GoldMade + gold
+
+			--things get weird when the value is set to negative
+			if goldMade < 0 then 
+				value.GoldMade = 0
+			else 
+				value.GoldMade = goldMade
+			end
+
 			return
 		 end
 	end
@@ -13,8 +23,7 @@ function TrackSales.db:AddGold(profession, gold)
 end
 
 function TrackSales.db:SubtractGold(profession, gold)
-
-	--todo there's a bug when gold goes below 0
+	
 	self:AddGold(profession, -gold)
 end
 
@@ -97,7 +106,7 @@ function TrackSales.db:MaxIndex()
 	return i
 end
 
-function TrackSales.db:Clear(...)
+function TrackSales.db:Clear()
 
 	TrackSalesDB = nil
 

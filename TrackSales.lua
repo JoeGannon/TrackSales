@@ -63,6 +63,10 @@ function TrackSales:SlashCommands(args)
 		local cmd = arg3
 		local gold = arg4
 
+		if tonumber(gold) < 0 then
+			gold = 0
+		end
+
 		if ts:IsAddCommand(cmd) then 			
 
 			TrackSales.db:AddGold(profession, gold)
