@@ -7,3 +7,5 @@
 
 embeds.xml
 TrackSales.lua
+Database.lua
+Helpers.lua
