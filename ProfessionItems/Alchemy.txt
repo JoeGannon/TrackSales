@@ -1,0 +1,118 @@
+Alchemist
+Alchemy
+Alchemy
+Alchemy
+Alchemy
+Arcane Elixir
+Blackmouth Oil
+Catseye Elixir
+Discolored Healing Potion
+Dreamless Sleep Potion
+Elixir of Agility
+Elixir of Brute Force
+Elixir of Defense
+Elixir of Demonslaying
+Elixir of Detect Demon
+Elixir of Detect Lesser Invisibility
+Elixir of Detect Undead
+Elixir of Dream Vision
+Elixir of Firepower
+Elixir of Fortitude
+Elixir of Frost Power
+Elixir of Giant Growth
+Elixir of Giants
+Elixir of Greater Agility
+Elixir of Greater Defense
+Elixir of Greater Firepower
+Elixir of Greater Intellect
+Elixir of Greater Water Breathing
+Elixir of Lesser Agility
+Elixir of Lion
+Elixir of Minor Agility
+Elixir of Minor Defense
+Elixir of Minor Fortitude
+Elixir of Ogre
+Elixir of Poison Resistance
+Elixir of Shadow Power
+Elixir of Superior Defense
+Elixir of the Mongoose
+Elixir of the Sages
+Elixir of Tongues
+Elixir of Water Breathing
+Elixir of Wisdom
+Fire Oil
+Fire Protection Potion
+Flask of Chromatic Resistance
+Flask of Distilled Wisdom
+Flask of Petrification
+Flask of Supreme Power
+Flask of the Titans
+Free Action Potion
+Frost Oil
+Frost Protection Potion
+Ghost Dye
+Gift of Arthas
+Goblin Rocket Fuel
+Great Rage Potion
+Greater Arcane Elixir
+Greater Arcane Protection Potion
+Greater Dreamless Sleep Potion
+Greater Fire Protection Potion
+Greater Frost Protection Potion
+Greater Healing Potion
+Greater Holy Protection Potion
+Greater Mana Potion
+Greater Nature Protection Potion
+Greater Shadow Protection Potion
+Greater Stoneshield Potion
+Gurubashi Mojo Madness
+Healing Potion
+Holy Protection Potion
+Invisibility Potion
+Lesser Healing Potion
+Lesser Invisibility Potion
+Lesser Mana Potion
+Lesser Stoneshield Potion
+Limited Invulnerability Potion
+Living Action Potion
+Mageblood Potion
+Magic Resistance Potion
+Major Healing Potion
+Major Mana Potion
+Major Rejuvenation Potion
+Major Troll
+Mana Potion
+Mighty Rage Potion
+Mighty Troll
+Minor Healing Potion
+Minor Magic Resistance Potion
+Minor Mana Potion
+Minor Rejuvenation Potion
+Nature Protection Potion
+Oil of Immolation
+Philosophers
+Purification Potion
+Rage Potion
+Restorative Potion
+Shadow Oil
+Shadow Protection Potion
+Stonescale Oil
+Strong Troll
+Superior Healing Potion
+Superior Mana Potion
+Swiftness Potion
+Swim Speed Potion
+Transmute: Air to Fire
+Transmute: Arcanite
+Transmute: Earth to Life
+Transmute: Earth to Water
+Transmute: Elemental Fire
+Transmute: Fire to Earth
+Transmute: Iron to Gold
+Transmute: Life to Earth
+Transmute: Mithril to Truesilver
+Transmute: Undeath to Water
+Transmute: Water to Air
+Transmute: Water to Undeath
+Weak Troll
+Wildvine Potion
