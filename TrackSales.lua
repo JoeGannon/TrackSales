@@ -86,7 +86,7 @@ function TrackSales:SlashCommands(args)
 		if ts:IsAddCommand(arg2) then
 			TrackSales.db:TryAddNewProfession(arg3, true)
 		end
-		if ts:IsRemoveCommand(arg2) then
+		if ts:IsRemoveCommand(arg2) then			
 			TrackSales.db:RemoveProfession(arg3)
 		end
 		return 
@@ -100,7 +100,7 @@ function TrackSales:SlashCommands(args)
 		end
 
 		if ts:IsShowCommand(arg2) then			
-			TrackSales.db:ShowProfession(arg3, true)
+			TrackSales.db:ShowProfession(arg3)
 		end
 
 		return
