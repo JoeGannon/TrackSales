@@ -9,7 +9,7 @@ function TrackSales:OnInitialize()
 		TrackSales.db:SetDefaults()
 	else 
 		self:Print("is not null")
-	end 	
+	end
 
 	self:SecureHook("TakeInboxMoney")
 	self:SecureHook("AutoLootMailItem")

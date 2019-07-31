@@ -169,7 +169,7 @@ function TrackSales.db:ConsoleHack(arg, superHack)
 		end
 	end
 
-	return arg
+	return arg:gsub("^%l", string.upper)
 end
 
 function TrackSales.db:SetDefaults()
