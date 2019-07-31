@@ -1,9 +1,30 @@
 TrackSales.db = TrackSales:NewModule("DB", "AceConsole-3.0")
 
+local _, ts = ...
+
+function TrackSales.db:TrackSale(item, gold)
+
+	local matchedProfession = ts:MatchProfession(item)
+	
+	if self:IsTrackedProfession(matchedProfession)	 then
+		self:AddGold(matchedProfession, gold)
+	end 
+end
+
+function TrackSales.db:IsTrackedProfession(profession)
+	
+	for index, value in ipairs(TrackSalesDB.Professions) do 
+		if value.Name == profession then
+			return true
+		end
+	end
+
+	return false
+end
+
 function TrackSales.db:AddGold(profession, gold)
 
 	for index, value in ipairs(TrackSalesDB.Professions) do 
-
 		 if value.Name == profession then
 
 			local goldMade = value.GoldMade + gold
@@ -64,7 +85,7 @@ function TrackSales.db:TryAddNewProfession(skillName, log)
 		end
 	end
 
-	skillName = self:FirstAidHack(skillName)
+	skillName = self:ConsoleHack(skillName, true)
 
 	for index, value in ipairs(professions) do
 		if value == skillName then			
@@ -76,7 +97,7 @@ function TrackSales.db:TryAddNewProfession(skillName, log)
 			end
 
 			local profession = { Name = skillName, GoldMade = 0, IsPrimary = isPrimary }
-
+			
 			table.insert(TrackSalesDB.Professions, profession)
 
 			self:Print("Now tracking "..profession.Name)
@@ -90,7 +111,7 @@ function TrackSales.db:TryAddNewProfession(skillName, log)
 end
 
 function TrackSales.db:RemoveProfession(profession)	
- 	profession = self:FirstAidHack(profession)
+ 	profession = self:ConsoleHack(profession)
 
 		if TrackSalesDB and TrackSalesDB.Professions then
 			for index, value in ipairs(TrackSalesDB.Professions) do
@@ -107,20 +128,29 @@ end
 
 --hack to allow /ts p a FirstAid
 --First Aid is parsed as 2 arguments
-function TrackSales.db:FirstAidHack(arg)	
+function TrackSales.db:ConsoleHack(arg, superHack)	
 	if arg == "FirstAid" then
 		arg = "First Aid"
 	end
+	if superHack then
+		if arg == "Herbalism" then
+			arg = "Herbalism Skills"
+		end
+		if arg == "Mining" then
+			arg = "Mining Skills"
+		end
+	end
+
 	return arg
 end
 
 function TrackSales.db:SetDefaults()
 	
-	local professions = self:LookupProfessions()
-
 	TrackSalesDB = {
 		Professions = {	}	 
 	 }
+
+	local professions = self:LookupProfessions()	
 
 	for index, value in ipairs(professions) do 
 		if value.Name then

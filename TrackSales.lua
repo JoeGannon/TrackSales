@@ -30,14 +30,25 @@ function TrackSales:TakeInboxMoney(...)
 
 	if invoiceType and invoiceType == "seller" then
 
-		TrackSales.db:AddGold("Mining", bid)
+		TrackSales.db:TrackSale(itemName, bid)
 	else 
 
-		local _, _, sender, subject, money = GetInboxHeaderInfo(mailIndex)
+		local _, _, sender, subject, money = GetInboxHeaderInfo(mailIndex)	
 
 		--assume it's a COD
 		if money > 0  then 
-			self:Print(sender, subject, money)
+
+			local multiplesIndex = string.find(subject, "(", 1, true)
+
+			local codPaymentPadding = 14
+			
+			if not multiplesIndex then 
+				subject = string.sub(subject, codPaymentPadding)
+			else 
+				subject =  string.sub(subject, codPaymentPadding, multiplesIndex - 2)	
+			end
+
+			TrackSales.db:TrackSale(subject, money)
 		end
 	end
 end 
@@ -62,6 +73,11 @@ function TrackSales:SlashCommands(args)
 	if not arg1 then
 		self:PrintSales()
 		return 
+	end
+
+	if (arg1 == "d") then
+		TrackSales.db:TrackSale(arg2, arg3)
+		return
 	end
 
 	--/ts c
@@ -142,24 +158,29 @@ end
 
 function TrackSales:PrintSales()	
 	
-	if TrackSalesDB and TrackSalesDB.Professions then 
-		for index, value in ipairs(TrackSalesDB.Professions) do 
-			local coinTexture = GetCoinTextureString(value.GoldMade)
-			self:Print(value.Name.."       "..coinTexture)
-		end
-		return
-	end
+	local isEmpty = true
+	
+	for index, value in ipairs(TrackSalesDB.Professions) do 
+		isEmpty = false
+		local coinTexture = GetCoinTextureString(value.GoldMade)
+		self:Print(value.Name.."       "..coinTexture)
+	end	
 
-	self:Print("You have no professions learned. Go learn some or add them via /ts profession add ProfesionName")	
+	if isEmpty then 
+		self:Print("You haven't learned any professions. Go learn some or enter \"/ts help\" for more info")	
+	end
 end
 
 function TrackSales:PrintIndexes()
-	if TrackSalesDB and TrackSalesDB.Professions then 
-		for index, value in ipairs(TrackSalesDB.Professions) do 
-			self:Print(tostring(index).."  "..value.Name)
-		end
-	return 
+		
+	local isEmpty = true
+
+	for index, value in ipairs(TrackSalesDB.Professions) do 
+		self:Print(tostring(index).."  "..value.Name)
+		isEmpty = false
 	end
 
-	self:Print("You have no professions learned. Go learn some or add them via /ts profession add ProfesionName")
+	if isEmpty then 
+		self:Print("You haven't learned any professions. Go learn some or enter \"/ts help\" for more info")		
+	end
 end
