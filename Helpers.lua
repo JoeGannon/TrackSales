@@ -29,6 +29,22 @@ function ts:IsRemoveCommand(arg)
     return arg == "r" or arg == "remove"
 end
 
+function ts:IsDisplayCommand(arg)
+    return self:IsShowCommand(arg) or self:IsHideCommand(arg) or self:IsChangeIndexCommand(arg)
+end
+
+function ts:IsShowCommand(arg)
+    return arg == "s" or arg == "show"
+end
+
+function ts:IsHideCommand(arg)
+    return arg == "h" or arg == "hide"
+end
+
+function ts:IsChangeIndexCommand(arg)
+    return arg == "ci" or arg == "changeindex"
+end
+
 function ts:MatchProfession(item)
 
     local matches = self:ContainsItem(ts.alchemyItems, item)

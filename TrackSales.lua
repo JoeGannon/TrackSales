@@ -73,12 +73,7 @@ function TrackSales:SlashCommands(args)
 	if not arg1 then
 		self:PrintSales()
 		return 
-	end
-
-	if (arg1 == "d") then
-		TrackSales.db:TrackSale(arg2, arg3)
-		return
-	end
+	end	
 
 	--/ts c
 	if (arg1 == "c" or arg1 == "config") and not arg2 then
@@ -97,9 +92,23 @@ function TrackSales:SlashCommands(args)
 		return 
 	end
 
+	--/ts d h Fishing
+	if (arg1 == "d" or arg1 == "display") and ts:IsDisplayCommand(arg2) and arg3 then
+		
+		if ts:IsHideCommand(arg2) then			
+			TrackSales.db:RemoveProfession(arg3, true)
+		end
+
+		if ts:IsShowCommand(arg2) then			
+			TrackSales.db:ShowProfession(arg3, true)
+		end
+
+		return
+	end	
+
 	--/ts c 1 a 705025
 	if self:IsValidConfigCommand(args) then		
-		local profession = TrackSales.db:FindProfession(arg2)		
+		local profession = TrackSales.db:GetProfessionByIndex(arg2)		
 		local cmd = arg3
 		local gold = arg4
 
@@ -163,7 +172,10 @@ function TrackSales:PrintSales()
 	for index, value in ipairs(TrackSalesDB.Professions) do 
 		isEmpty = false
 		local coinTexture = GetCoinTextureString(value.GoldMade)
-		self:Print(value.Name.."       "..coinTexture)
+		
+		if value.IsVisible then 
+			self:Print(value.Name.."       "..coinTexture)
+		end
 	end	
 
 	if isEmpty then 

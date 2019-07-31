@@ -6,7 +6,7 @@ function TrackSales.db:TrackSale(item, gold)
 
 	local matchedProfession = ts:MatchProfession(item)
 	
-	if self:IsTrackedProfession(matchedProfession)	 then
+	if self:IsTrackedProfession(matchedProfession) then
 		self:AddGold(matchedProfession, gold)
 	end 
 end
@@ -77,12 +77,10 @@ local professions = {
 
 function TrackSales.db:TryAddNewProfession(skillName, log)
 	
-	if TrackSalesDB and TrackSalesDB.Professions then
-		for index, value in ipairs(TrackSalesDB.Professions) do 
-			if value.Name == skillName then
-				return 
-			end 
-		end
+	for index, value in ipairs(TrackSalesDB.Professions) do 
+		if value.Name == skillName then
+			return 
+		end 
 	end
 
 	skillName = self:ConsoleHack(skillName, true)
@@ -96,7 +94,12 @@ function TrackSales.db:TryAddNewProfession(skillName, log)
 				skillName = string.sub(skillName, 0, string.len(skillName) - 7)				
 			end
 
-			local profession = { Name = skillName, GoldMade = 0, IsPrimary = isPrimary }
+			local profession = { 
+					Name = skillName,
+					GoldMade = 0,
+					IsPrimary = isPrimary,
+					IsVisible = true 
+				}
 			
 			table.insert(TrackSalesDB.Professions, profession)
 
@@ -110,18 +113,42 @@ function TrackSales.db:TryAddNewProfession(skillName, log)
 	end
 end
 
-function TrackSales.db:RemoveProfession(profession)	
- 	profession = self:ConsoleHack(profession)
-
-		if TrackSalesDB and TrackSalesDB.Professions then
-			for index, value in ipairs(TrackSalesDB.Professions) do
-				if (value.Name == profession) then 
-					table.remove(TrackSalesDB.Professions, index)
-					self:Print(profession.." removed")
-					return
-				end
+function TrackSales.db:RemoveProfession(profession, temporary)	
+	 
+	profession = self:ConsoleHack(profession, temporary) 
+	 
+	 if temporary then
+		for index, value in ipairs(TrackSalesDB.Professions) do
+			if (value.Name == profession) then 
+				value.IsVisible = false
+				self:Print(profession.." is now hidden")
+				return
 			end
 		end
+	 end
+
+	for index, value in ipairs(TrackSalesDB.Professions) do
+		if (value.Name == profession) then 
+			table.remove(TrackSalesDB.Professions, index)
+			self:Print(profession.." removed")
+			return
+		end
+	end
+
+	self:Print("Profession not found "..profession)
+end
+
+function TrackSales.db:ShowProfession(profession)	
+	 
+	profession = self:ConsoleHack(profession) 
+
+	for index, value in ipairs(TrackSalesDB.Professions) do
+		if (value.Name == profession) then 
+			value.IsVisible = true
+			self:Print(profession.." is now shown")
+			return
+		end
+	end
 
 	self:Print("Profession not found "..profession)
 end
@@ -172,12 +199,12 @@ function TrackSales.db:LookupProfessions()
 	local sec4Name = self:GetProfessionName(sec4)
 
 	return {
-		{ Name = prof1Name, GoldMade = 0, IsPrimary = true },
-		{ Name = prof2Name, GoldMade = 0, IsPrimary = true },
-		{ Name = sec1Name,  GoldMade = 0, IsPrimary = false },
-		{ Name = sec2Name,  GoldMade = 0, IsPrimary = false },
-		{ Name = sec3Name,  GoldMade = 0, IsPrimary = false },
-		{ Name = sec4Name,  GoldMade = 0, IsPrimary = false },
+		{ Name = prof1Name, GoldMade = 0, IsPrimary = true, IsVisible = true },
+		{ Name = prof2Name, GoldMade = 0, IsPrimary = true, IsVisible = true },
+		{ Name = sec1Name,  GoldMade = 0, IsPrimary = false, IsVisible = true },
+		{ Name = sec2Name,  GoldMade = 0, IsPrimary = false, IsVisible = true },
+		{ Name = sec3Name,  GoldMade = 0, IsPrimary = false, IsVisible = true },
+		{ Name = sec4Name,  GoldMade = 0, IsPrimary = false, IsVisible = true },
 	}
 end
 
@@ -191,7 +218,7 @@ function TrackSales.db:GetProfessionName(index)
 	end
 end
 
-function TrackSales.db:FindProfession(idx)
+function TrackSales.db:GetProfessionByIndex(idx)
 	local val = ""
 	
 	for index, value in ipairs(TrackSalesDB.Professions) do 
