@@ -119,33 +119,44 @@ function TrackSales:SlashCommands(args)
 		return
 	end	
 
-	--todo allow prof name
 	--/ts c 1 a 705025
-	if self:IsValidConfigCommand(args) then		
-		local profession = TrackSales.db:GetProfessionByIndex(arg2)		
+	if self:IsValidConfigCommand(args) then	
+		
+		local option, arg2, arg3, arg4 = TrackSales:GetArgs(args, 4)		
+
+		arg2 = TrackSales.db:ConsoleHack(arg2)
+
+		local profession = TrackSales.db:FindTrackedProfession(arg2)		
+		
+		if not profession then 
+		 	profession = TrackSales.db:GetProfessionByIndex(arg2)		
+		end
+
+		local name = profession.Name
+
 		local cmd = arg3
 		local gold = arg4
 
 		if tonumber(gold) < 0 then
 			gold = 0
-		end
+		end		
 
 		if ts:IsAddCommand(cmd) then 			
 
-			TrackSales.db:AddGold(profession, gold)
-			self:Print("Added "..GetCoinTextureString(gold).." to "..profession)		
+			TrackSales.db:AddGold(name, gold)
+			self:Print("Added "..GetCoinTextureString(gold).." to "..name)		
 		end
 
 		if ts:IsSubtractCommand(cmd) then 			
 		
-			TrackSales.db:SubtractGold(profession, gold)
-			self:Print("Subtracted "..GetCoinTextureString(gold).." from "..profession)
+			TrackSales.db:SubtractGold(name, gold)
+			self:Print("Subtracted "..GetCoinTextureString(gold).." from "..name)
 		end		
 
 		if ts:IsSetCommand(cmd) then 			
 		
-			TrackSales.db:SetGold(profession, gold)
-			self:Print("Set "..profession.." to "..GetCoinTextureString(gold))
+			TrackSales.db:SetGold(name, gold)
+			self:Print("Set "..name.." to "..GetCoinTextureString(gold))
 		end		
 
 		return 
@@ -157,6 +168,7 @@ function TrackSales:IsValidConfigCommand(args)
 	local option, arg2, arg3, arg4 = TrackSales:GetArgs(args, 4)
 
 	local maxIndex = TrackSales.db:MaxIndex()
+
 	local idx = tonumber(arg2)
 	local gold = tonumber(arg4)
  
@@ -166,15 +178,19 @@ function TrackSales:IsValidConfigCommand(args)
 		return false
 	end 
 
-	if (not (idx and gold) or idx < 1 or idx > maxIndex) then 
+	arg2 = TrackSales.db:ConsoleHack(arg2)
+
+	local profession = TrackSales.db:FindTrackedProfession(arg2)	
+	
+	if (not (idx and gold) or idx < 1 or idx > maxIndex) and not profession then 
 		self:Print("Invalid index or gold amount!")
 		return false
-	end
+	end	
 
 	if not (arg3 and (ts:IsAddCommand(arg3) or ts:IsSubtractCommand(arg3) or ts:IsSetCommand(arg3))) then
 		self:Print("Invalid Operation! Only add (a), subtract (s), and set are supported")
 		return false
-	end	
+	end		
 
 	return true
 end
