@@ -30,7 +30,7 @@ function ts:IsRemoveCommand(arg)
 end
 
 function ts:IsDisplayCommand(arg)
-    return self:IsShowCommand(arg) or self:IsHideCommand(arg) or self:IsChangeIndexCommand(arg)
+    return self:IsShowCommand(arg) or self:IsHideCommand(arg) or self:IsOrderCommand(arg)
 end
 
 function ts:IsShowCommand(arg)
@@ -41,8 +41,8 @@ function ts:IsHideCommand(arg)
     return arg == "h" or arg == "hide"
 end
 
-function ts:IsChangeIndexCommand(arg)
-    return arg == "ci" or arg == "changeindex"
+function ts:IsOrderCommand(arg)
+    return arg == "o" or arg == "order"
 end
 
 function ts:MatchProfession(item)

@@ -62,10 +62,12 @@ local professions = {
 }
 
 function TrackSales.db:TryAddNewProfession(profession, log)
-	
-	local prof = self:FindTrackedProfession(profession)
 
-	if prof and prof.Name == profession then 
+	local arg = profession:gsub("^%l", string.upper)
+	
+	local prof = self:FindTrackedProfession(arg)
+
+	if prof and prof.Name == arg then 
 		return 
 	end	
 
@@ -95,20 +97,13 @@ function TrackSales.db:TryAddNewProfession(profession, log)
 	end	
 
 	if log then
-		self:Print("Profession not found "..profession.."(professions are case sensitive)")
+		self:Print("Profession not found "..profession)
 	end
 end
 
-function TrackSales.db:RemoveProfession(profession, temporary)	
+function TrackSales.db:RemoveProfession(profession)	
 	 
-	profession = self:ConsoleHack(profession) 
-	local prof = self:FindTrackedProfession(profession)
-	 
-	 if temporary and prof then		
-		prof.IsVisible = false
-		self:Print(profession.." is now hidden")
-		return		
-	 end
+	profession = self:ConsoleHack(profession) 		
 
 	for index, value in ipairs(TrackSalesDB.Professions) do
 		if (value.Name == profession) then 
@@ -136,10 +131,97 @@ function TrackSales.db:ShowProfession(profession)
 	self:Print("Profession not found "..profession)
 end
 
+function TrackSales.db:HideProfession(profession)	
+	 
+	profession = self:ConsoleHack(profession) 
+
+	local prof = self:FindTrackedProfession(profession)
+	 
+	 if prof then		
+		prof.IsVisible = false
+		self:Print(profession.." is now hidden")
+		return		
+	 end
+
+	self:Print("Profession not found "..profession)
+end
+
+function TrackSales.db:OrderProfessions(order)
+
+	local items = 0;
+	local indexes = { }
+	local hasDupes = false			
+ 	local test = false
+	order:gsub(".", function(idx)
+		items = items + 1
+		local dupes = ts:ContainsItem(indexes, idx)		
+		
+		table.insert(indexes, idx)	
+		
+		if dupes then 			
+			hasDupes = true
+			return
+		end		
+	end)	
+	
+	local visibleProfs = self:MaxIndex(true)
+
+	if hasDupes then 
+		self:Print("Found duplicate Indexes! Must specify each index once")
+		return
+	end
+	if items > visibleProfs then
+		self:Print("Too many Indexes provivded!")
+		self:Print("There are only "..visibleProfs.." visible Indexes. You provided "..items)
+		return 
+	end
+	if items < visibleProfs then
+		self:Print("Too few Indexes provivded!")
+		self:Print("There are "..visibleProfs.." visible Indexes. You provided "..items)
+		return 
+	end	
+	
+	for index, value in ipairs(indexes) do 
+	
+		if tonumber(value) > visibleProfs then 
+			self:Print("Invalid Index "..value)
+			return
+		end		
+	end
+
+	local newOrder = { }
+	local isVisibleIndex = 0
+
+	for index, value in ipairs(indexes) do 
+		isVisibleIndex = 0
+		for i, prof in ipairs(TrackSalesDB.Professions) do 			
+
+			if prof.IsVisible then 
+				isVisibleIndex = isVisibleIndex + 1
+			end
+
+			if prof.IsVisible and isVisibleIndex == tonumber(value) then 				
+				table.insert(newOrder, prof)
+			end
+		end
+	end	
+
+	for i, prof in ipairs(TrackSalesDB.Professions) do 			
+		if not prof.IsVisible then 
+			table.insert(newOrder, prof)
+		end
+	end	
+
+	TrackSalesDB.Professions = newOrder
+end
+
 --hack to allow /ts p a FirstAid
 --First Aid is parsed as 2 arguments
 function TrackSales.db:ConsoleHack(arg, superHack)	
-	if arg == "FirstAid" then
+		
+	arg = arg:gsub("^%l", string.upper)
+
+	if string.lower(arg) == "firstaid" then
 		arg = "First Aid"
 	end
 	if superHack then
@@ -151,7 +233,7 @@ function TrackSales.db:ConsoleHack(arg, superHack)
 		end
 	end
 
-	return arg:gsub("^%l", string.upper)
+	return arg
 end
 
 function TrackSales.db:FindTrackedProfession(profession)
@@ -224,10 +306,16 @@ function TrackSales.db:GetProfessionByIndex(idx)
 	return val
 end
 
-function TrackSales.db:MaxIndex()	
+function TrackSales.db:MaxIndex(visibleOnly)	
 	local i = 0
 	for index, value in ipairs(TrackSalesDB.Professions) do 
-		i = i + 1
+
+		if visibleOnly and value.IsVisible then 
+			i = i + 1
+		end
+		if not visibleOnly then 
+			i = i + 1
+		end
 	end
 	return i
 end

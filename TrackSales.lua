@@ -96,16 +96,30 @@ function TrackSales:SlashCommands(args)
 	if (arg1 == "d" or arg1 == "display") and ts:IsDisplayCommand(arg2) and arg3 then
 		
 		if ts:IsHideCommand(arg2) then			
-			TrackSales.db:RemoveProfession(arg3, true)
+			TrackSales.db:HideProfession(arg3)
 		end
 
 		if ts:IsShowCommand(arg2) then			
 			TrackSales.db:ShowProfession(arg3)
 		end
 
+		if ts:IsOrderCommand(arg2) then			
+
+			if not tonumber(arg3) then
+				self:Print("Invalid argument!")
+				self:Print("Must pass Indexes  ie 4321")
+			return 	
+			end			
+
+			TrackSales.db:OrderProfessions(arg3)
+			self:Print("New Order:")
+			self:PrintSales()
+		end
+
 		return
 	end	
 
+	--todo allow prof name
 	--/ts c 1 a 705025
 	if self:IsValidConfigCommand(args) then		
 		local profession = TrackSales.db:GetProfessionByIndex(arg2)		
