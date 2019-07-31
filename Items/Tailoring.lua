@@ -235,5 +235,14 @@ ts.tailoringItems = {
 "Wizardweave Turban",
 "Woolen Bag",
 "Woolen Boots",
-"Woolen Cape"
+"Woolen Cape",
+
+--Adding Cloths
+"Linen Cloth",
+"Wool Cloth",
+"Silk Cloth", 
+"Mageweave Cloth",
+"Runecloth",
+"Felcloth",
+"Mooncloth"
 }
