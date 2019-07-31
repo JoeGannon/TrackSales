@@ -1,8 +1,8 @@
 
 local _, ts = ...
 
-function ts:IsConfigCommand(arg)
-    return arg == "c" or arg == "config"
+function ts:IsBalanceCommand(arg)
+    return arg == "b" or arg == "balance"
 end 
 
 function ts:IsAddCommand(arg)

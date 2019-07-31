@@ -75,8 +75,8 @@ function TrackSales:SlashCommands(args)
 		return 
 	end	
 
-	--/ts c
-	if (arg1 == "c" or arg1 == "config") and not arg2 then
+	--/ts b
+	if ts:IsBalanceCommand(arg1) and not arg2 then
 		self:PrintIndexes()
 		return 
 	end
@@ -172,7 +172,7 @@ function TrackSales:IsValidConfigCommand(args)
 	local idx = tonumber(arg2)
 	local gold = tonumber(arg4)
  
-	if not ts:IsConfigCommand(option)  then
+	if not ts:IsBalanceCommand(option)  then
 		self:Print("Invalid Command!")
 		self:Print(option, arg2, arg3, arg4)
 		return false
