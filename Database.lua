@@ -6,25 +6,7 @@ function TrackSales.db:TrackSale(item, gold)
 
 	local matchedProfession = ts:MatchProfession(item)
 
-	if self:IsTrackedProfession(matchedProfession) then
-		self:AddGold(matchedProfession, gold)
-	end 
-end
-
-function TrackSales.db:IsTrackedProfession(profession)
-	
-	return self:FindTrackedProfession(profession) ~= nil
-end
-
-function TrackSales.db:FindTrackedProfession(profession)
-	
-	for index, value in ipairs(TrackSalesDB.Professions) do 
-		if value.Name == profession then
-			return value 
-		end
-	end
-
-	return nil
+	self:AddGold(matchedProfession, gold)
 end
 
 function TrackSales.db:AddGold(profession, gold)
@@ -170,6 +152,17 @@ function TrackSales.db:ConsoleHack(arg, superHack)
 	end
 
 	return arg:gsub("^%l", string.upper)
+end
+
+function TrackSales.db:FindTrackedProfession(profession)
+	
+	for index, value in ipairs(TrackSalesDB.Professions) do 
+		if value.Name == profession then
+			return value 
+		end
+	end
+
+	return nil
 end
 
 function TrackSales.db:SetDefaults()
