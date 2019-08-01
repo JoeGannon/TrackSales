@@ -152,10 +152,11 @@ function TrackSales:SlashCommands(args)
 			TrackSales.db:RemoveProfession(arg2)
 		end
 		return 
-	end
+	end	
 	
+	--/ts d o 321
 	--/ts d Fishing h
-	if ts:IsDisplayCommand(arg1, arg3) then
+	if ts:IsDisplayCommand(arg1, arg3) or ts:IsOrderCommand(arg2) then		
 
 		if (ts:IsHelpCommand(arg2)) then			
 			self:PrintDisplayHelp()
@@ -168,9 +169,9 @@ function TrackSales:SlashCommands(args)
 
 		if ts:IsShowCommand(arg3) then			
 			TrackSales.db:ShowProfession(arg2)
-		end
+		end		
 
-		if ts:IsOrderCommand(arg3) then			
+		if ts:IsOrderCommand(arg2) then			
 
 			if not tonumber(arg3) then
 				self:Print("Invalid argument!")
@@ -178,10 +179,13 @@ function TrackSales:SlashCommands(args)
 			return 	
 			end			
 
-			TrackSales.db:OrderProfessions(arg3)
-			self:Print("New Order:")
-			self:Print("")
-			self:PrintSales()
+			local  ordered = TrackSales.db:OrderProfessions(arg3)
+
+			if ordered then
+				self:Print("New Order:")
+				self:PrintSales()
+			end
+			return 
 		end
 
 		return
@@ -280,26 +284,11 @@ function TrackSales:PrintSales(showHidden)
 		
 		if showHidden or value.IsVisible then 
 			self:Print(value.Name.."       "..coinTexture)
-		end
-		
+		end		
 	end	
 
 	if isEmpty then 
 		self:Print("You haven't learned any professions. Go learn some or enter /ts help for more info")	
-	end
-end
-
-function TrackSales:PrintIndexes()
-		
-	local isEmpty = true
-
-	for index, value in ipairs(TrackSalesDB.Professions) do 
-		self:Print(tostring(index).."  "..value.Name)
-		isEmpty = false
-	end
-
-	if isEmpty then 
-		self:Print("You haven't learned any professions. Go learn some or enter /ts help for more info")		
 	end
 end
 
@@ -324,8 +313,8 @@ function TrackSales:PrintBalanceHelp()
 	self:Print("")
 	self:Print("Examples:")
 	self:Print("    /ts balance Fishing add 20000  (Add 2 gold to Fishing)")			
-	self:Print("    /ts b Fishing s 20000  (Subtract 2 gold from Fishing)")		
-	self:Print("    /ts b Fishing set 100000  (Set Fishing to 10 gold)")	
+	self:Print("    /ts balance Fishing subtract 20000  (Subtract 2 gold from Fishing)")		
+	self:Print("    /ts balance Fishing set 100000  (Set Fishing to 10 gold)")	
 end
 
 function TrackSales:PrintDisplayHelp()
@@ -341,9 +330,9 @@ function TrackSales:PrintDisplayHelp()
 	self:Print("Args:")
 	self:Print("    /ts display order {NewOrder}")		
 	self:Print("Examples (assuming 4 professions are tracked):")
-	self:Print("    /ts d Cooking order 2134 (Swap the order of the first two elements)")
-	self:Print("    /ts d Cooking order 4321 (Reverse the order)")
-	self:Print("    /ts d Cooking order 1234 (Keep order the same)")
+	self:Print("    /ts display order 2134 (Swap the order of the first two elements)")
+	self:Print("    /ts display order 4321 (Reverse the order)")
+	self:Print("    /ts display order 1234 (Keep order the same)")
 end
 
 function TrackSales:PrintTrackHelp()
@@ -354,5 +343,5 @@ function TrackSales:PrintTrackHelp()
 	self:Print("    remove")
 	self:Print("Examples:")
 	self:Print("    /ts track Mining add (Track mining)")			
-	self:Print("    /ts t Mining r  (Stop tracking mining)")			
+	self:Print("    /ts track Mining remove  (Stop tracking mining)")			
 end

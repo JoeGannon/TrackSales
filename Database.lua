@@ -210,6 +210,8 @@ function TrackSales.db:OrderProfessions(order)
 	end	
 
 	TrackSalesDB.Professions = newOrder
+
+	return true
 end
 
 --hack to allow /ts p a FirstAid
