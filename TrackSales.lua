@@ -19,7 +19,7 @@ end
 function TrackSales:OnEnable()	
 	if not TrackSalesDB then		
 		TrackSales.db:SetDefaults()
-		self:Print("Welcome to TrackSales. To view sales run /ts. For more options run /ts help")	
+		self:Print("Welcome to TrackSales. To view sales run /tracksales or /ts. For more options run /ts help")	
 	end
 end
 
@@ -257,7 +257,7 @@ function TrackSales:PrintHelp()
 	self:Print("")
 	self:Print("Enter a command to see its options")
 	self:Print("All commands and arguments can be abbreviated to the first character")
-	self:Print("Run /ts to view sales (/ts a to show hidden professions)")
+	self:Print("Run /ts or /tracksales to view sales (/ts a to show hidden professions)")
 end
 
 function TrackSales:PrintBalanceHelp()
