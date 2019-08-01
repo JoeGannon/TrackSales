@@ -59,42 +59,55 @@ function TrackSales:AutoLootMailItem(...)
 	self:TakeInboxMoney(...)
 end
 
+--do to limitations of the client, https://wowwiki.fandom.com/wiki/Events/Trade#TRADE_ACCEPT_UPDATE
+--it's not guaranteed TRADE_ACCEPT_UPDATE will fire with both Player and Target having "accepted"
+--this is a hack in an attempt to not double count transactions through trade
+local recordedTrades = { }
+
 function TrackSales:TRADE_ACCEPT_UPDATE(...)
-	self:Print("TRADE_ACCEPT_UPDATE")
-	local a, b, c, d, e, f, g, h, i = ...
-
-	self:Print(a, b, c, d, e, f, g, h, i)
-
-	local money = GetTargetTradeMoney()
-
-	self:Print(money)
-
-	local name, texture, numItems, quality, isUsable, enchantment = GetTradePlayerItemInfo(1)
-
-	self:Print(name, texture, numItems, quality, isUsable, enchantment)
-
-	name, texture, numItems, quality, isUsable, enchantment = GetTradePlayerItemInfo(2)
-
-	self:Print(name, texture, numItems, quality, isUsable, enchantment)
+	local playerAccepted, _ = ...
+	local gold = GetTargetTradeMoney()
 	
-	name, texture, numItems, quality, isUsable, enchantment = GetTradePlayerItemInfo(7)
+	if playerAccepted == 1 and gold > 0 then
 
-	self:Print(name, texture, numItems, quality, isUsable, enchantment)
+		self:Print("accepted")
 
-	self:Print("target")
-
-	name, texture, numItems, quality, isUsable, enchantment = GetTradeTargetItemInfo(1)
-
-	self:Print(name, texture, numItems, quality, isUsable, enchantment)
-
-	name, texture, numItems, quality, isUsable, enchantment = GetTradeTargetItemInfo(2)
-
-	self:Print(name, texture, numItems, quality, isUsable, enchantment)
+		local time = GetTime()
+		local targetName = UnitName("target")
 	
-	name, texture, numItems, quality, isUsable, enchantment = GetTradeTargetItemInfo(7)
+		for i, v in ipairs(recordedTrades) do
+			if v.Target == targetName and v.Gold == gold and GetTime() - v.Time < 150 then 
+				--assume transaction was already recorded
+				self:Print("Recorded")
+				return 
+			end
+		end		
 
-	self:Print(name, texture, numItems, quality, isUsable, enchantment)
+		table.insert(recordedTrades, { Target = targetName, Gold = gold, Time = time })
 
+		--todo summons, portals, and water
+		for i = 1, MAX_TRADE_ITEMS, 1 do 
+			
+			local itemName, _, _, _, _, enchantment = GetTradePlayerItemInfo(i)
+
+			local matchedProfession = TrackSales.db:MatchProfession(item)			
+			
+			if matchedProfession then 
+				self:Print("tracking")
+				TrackSales.db:AddGold(matchedProfession, gold)
+				return 				
+			end
+
+			if i == MAX_TRADE_ITEMS then 
+				_, _, _, _, _, enchantment = GetTradeTargetItemInfo(i)
+
+				if enchantment then 
+					self:Print("Adding Enchanting")
+					TrackSales.db:AddGold("Enchanting", gold)
+				end
+			end
+		end
+	end
 end
 
 function TrackSales:LEARNED_SPELL_IN_TAB(...)
