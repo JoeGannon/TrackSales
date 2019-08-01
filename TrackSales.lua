@@ -2,14 +2,7 @@ TrackSales = LibStub("AceAddon-3.0"):NewAddon("TrackSales", "AceConsole-3.0", "A
 
 local _, ts = ...
 
-function TrackSales:OnInitialize()			
-
-	if not TrackSalesDB then
-		self:Print("is null")
-		TrackSales.db:SetDefaults()
-	else 
-		self:Print("is not null")
-	end
+function TrackSales:OnInitialize()				
 
 	self:SecureHook("TakeInboxMoney")
 	self:SecureHook("AutoLootMailItem")
@@ -21,6 +14,13 @@ function TrackSales:OnInitialize()
 	frame:RegisterEvent("LEARNED_SPELL_IN_TAB")	
 	frame:SetScript("OnEvent", function(this, event, ...)
 		TrackSales[event](TrackSales, ...) end)
+end
+
+function TrackSales:OnEnable()	
+	if not TrackSalesDB then		
+		TrackSales.db:SetDefaults()
+		self:Print("Welcome to TrackSales. To view sales run /ts. For more options run /ts help")	
+	end
 end
 
 function TrackSales:TakeInboxMoney(...)
