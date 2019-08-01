@@ -76,8 +76,6 @@ function TrackSales.db:TryAddNewProfession(profession, log)
 	for index, value in ipairs(professions) do
 		if value == profession then			
 
-			local isPrimary = not (profession == "Cooking" or profession == "Fishing" or profession == "First Aid")	
-			
 			if (string.match(profession, "Skills")) then			
 				profession = string.sub(profession, 0, string.len(profession) - 7)				
 			end
@@ -85,7 +83,6 @@ function TrackSales.db:TryAddNewProfession(profession, log)
 			local prof = { 
 					Name = profession,
 					GoldMade = 0,
-					IsPrimary = isPrimary,
 					IsVisible = true 
 				}
 			
@@ -275,12 +272,12 @@ function TrackSales.db:LookupProfessions()
 	local sec4Name = self:GetProfessionName(sec4)
 
 	return {
-		{ Name = prof1Name, GoldMade = 0, IsPrimary = true, IsVisible = true },
-		{ Name = prof2Name, GoldMade = 0, IsPrimary = true, IsVisible = true },
-		{ Name = sec1Name,  GoldMade = 0, IsPrimary = false, IsVisible = true },
-		{ Name = sec2Name,  GoldMade = 0, IsPrimary = false, IsVisible = true },
-		{ Name = sec3Name,  GoldMade = 0, IsPrimary = false, IsVisible = true },
-		{ Name = sec4Name,  GoldMade = 0, IsPrimary = false, IsVisible = true },
+		{ Name = prof1Name, GoldMade = 0, IsVisible = true },
+		{ Name = prof2Name, GoldMade = 0, IsVisible = true },
+		{ Name = sec1Name,  GoldMade = 0, IsVisible = true },
+		{ Name = sec2Name,  GoldMade = 0, IsVisible = true },
+		{ Name = sec3Name,  GoldMade = 0, IsVisible = true },
+		{ Name = sec4Name,  GoldMade = 0, IsVisible = true },
 	}
 end
 
