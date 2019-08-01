@@ -17,8 +17,8 @@ function ts:IsSetCommand(arg)
     return arg == "set"
 end 
 
-function ts:IsProfessionCommand(arg)
-    return self:IsAddCommand(arg) or self:IsRemoveCommand(arg)
+function ts:IsTrackCommand(arg1, arg2)
+    return (arg1 == "t" or arg1 == "track") and (self:IsAddCommand(arg2) or self:IsRemoveCommand(arg2) or self:IsHelpCommand(arg2))
 end 
 
 function ts:IsAddCommand(arg)
@@ -29,8 +29,8 @@ function ts:IsRemoveCommand(arg)
     return arg == "r" or arg == "remove"
 end
 
-function ts:IsDisplayCommand(arg)
-    return self:IsShowCommand(arg) or self:IsHideCommand(arg) or self:IsOrderCommand(arg)
+function ts:IsDisplayCommand(arg1, arg2)
+    return (arg1 == "d" or arg1 == "display") and (self:IsShowCommand(arg2) or self:IsHideCommand(arg2) or self:IsOrderCommand(arg2) or self:IsHelpCommand(arg2))
 end
 
 function ts:IsShowCommand(arg)
@@ -43,6 +43,10 @@ end
 
 function ts:IsOrderCommand(arg)
     return arg == "o" or arg == "order"
+end
+
+function ts:IsHelpCommand(arg)
+    return arg == "h" or arg == "help" or not arg
 end
 
 function ts:MatchProfession(item)
