@@ -5,18 +5,20 @@ local _, ts = ...
 function TrackSales:OnInitialize()				
 
 	self:SecureHook("TakeInboxMoney")
-	self:SecureHook("AutoLootMailItem")
+	self:SecureHook("AutoLootMailItem")	
 
 	TrackSales:RegisterChatCommand("ts", "SlashCommands")
 	TrackSales:RegisterChatCommand("tracksales", "SlashCommands")
 
 	local frame = CreateFrame("Frame")
-	frame:RegisterEvent("LEARNED_SPELL_IN_TAB")	
+	frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
+	frame:RegisterEvent("TRADE_ACCEPT_UPDATE")	
 	frame:SetScript("OnEvent", function(this, event, ...)
 		TrackSales[event](TrackSales, ...) end)
 end
 
 function TrackSales:OnEnable()	
+
 	if not TrackSalesDB then		
 		TrackSales.db:SetDefaults()
 		self:Print("Welcome to TrackSales. To view sales run /tracksales or /ts. For more options run /ts help")	
@@ -55,7 +57,45 @@ end
 
 function TrackSales:AutoLootMailItem(...)
 	self:TakeInboxMoney(...)
-end 
+end
+
+function TrackSales:TRADE_ACCEPT_UPDATE(...)
+	self:Print("TRADE_ACCEPT_UPDATE")
+	local a, b, c, d, e, f, g, h, i = ...
+
+	self:Print(a, b, c, d, e, f, g, h, i)
+
+	local money = GetTargetTradeMoney()
+
+	self:Print(money)
+
+	local name, texture, numItems, quality, isUsable, enchantment = GetTradePlayerItemInfo(1)
+
+	self:Print(name, texture, numItems, quality, isUsable, enchantment)
+
+	name, texture, numItems, quality, isUsable, enchantment = GetTradePlayerItemInfo(2)
+
+	self:Print(name, texture, numItems, quality, isUsable, enchantment)
+	
+	name, texture, numItems, quality, isUsable, enchantment = GetTradePlayerItemInfo(7)
+
+	self:Print(name, texture, numItems, quality, isUsable, enchantment)
+
+	self:Print("target")
+
+	name, texture, numItems, quality, isUsable, enchantment = GetTradeTargetItemInfo(1)
+
+	self:Print(name, texture, numItems, quality, isUsable, enchantment)
+
+	name, texture, numItems, quality, isUsable, enchantment = GetTradeTargetItemInfo(2)
+
+	self:Print(name, texture, numItems, quality, isUsable, enchantment)
+	
+	name, texture, numItems, quality, isUsable, enchantment = GetTradeTargetItemInfo(7)
+
+	self:Print(name, texture, numItems, quality, isUsable, enchantment)
+
+end
 
 function TrackSales:LEARNED_SPELL_IN_TAB(...)
 	local spellId = ...
@@ -121,12 +161,13 @@ function TrackSales:SlashCommands(args)
 
 			if not tonumber(arg3) then
 				self:Print("Invalid argument!")
-				self:Print("Must pass Indexes  ie 4321")
+				self:Print("Must pass Indexes ie 4321")
 			return 	
 			end			
 
 			TrackSales.db:OrderProfessions(arg3)
 			self:Print("New Order:")
+			self:Print("")
 			self:PrintSales()
 		end
 
