@@ -261,10 +261,19 @@ function TrackSales.db:SetDefaults()
 	end
 end
 
-function TrackSales.db:LookupProfessions()
+function TrackSales.db:LookupProfessions()	
 
-	--todo check how many items classic returns
+	--todo this api isn't available in classic, https://wow.gamepedia.com/Global_functions/Classic
 	local prof1, prof2, sec1, sec2, sec3, sec4 = GetProfessions()	
+
+	-- for skillIndex = 1, GetNumSkillLines() do
+	-- 	local skillName, isHeader, isExpanded, skillRank, numTempPoints, skillModifier,
+	-- 	  skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType,
+	-- 	  skillDescription = GetSkillLineInfo(skillIndex)
+	-- 	if not isHeader then
+	-- 	   print(string.format("Skill: %s - %s", skillName, skillRank))
+	-- 	end
+	-- end
 	
 	local prof1Name = self:GetProfessionName(prof1)
 	local prof2Name = self:GetProfessionName(prof2)
