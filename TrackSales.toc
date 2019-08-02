@@ -1,7 +1,7 @@
 ## Interface: 80200
 ## Version: 0.0.1
 ## Title: TrackSales
-## Notes: Track Gold made through Professions or Class Abilities from Auction House and Trades
+## Notes: Track Gold made through Professions from Auction House and Trade sales
 ## Author: Joe Gannon
 ## SavedVariablesPerCharacter: TrackSalesDB
 

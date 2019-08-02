@@ -21,7 +21,7 @@ function TrackSales:OnEnable()
 
 	if not TrackSalesDB then		
 		TrackSales.db:SetDefaults()
-		self:Print("Welcome to TrackSales. To view sales run /tracksales or /ts. For more options run /ts help")	
+		self:Print("Welcome to TrackSales. To view sales run /ts or /tracksales. For more options run /ts help")	
 	end
 end
 
@@ -31,7 +31,7 @@ function TrackSales:TakeInboxMoney(...)
 	local invoiceType, itemName, playerName, bid, buyout, deposit, consignment = GetInboxInvoiceInfo(mailIndex)
 
 	if invoiceType and invoiceType == "seller" then
-
+		self:Print(itemName)
 		TrackSales.db:TrackSale(itemName, bid)
 	else 
 
@@ -85,17 +85,15 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 
 		table.insert(recordedTrades, { Target = targetName, Gold = gold, Time = time })
 
-		--todo summons, portals, and water
 		for i = 1, MAX_TRADE_ITEMS, 1 do 
 			
 			local itemName, _, _, _, _, enchantment = GetTradePlayerItemInfo(i)
 
-			local matchedProfession = TrackSales.db:MatchProfession(item)			
+			local matchedProfession = TrackSales.db:MatchProfession(itemName)
 			
-			if matchedProfession then 
-				self:Print("tracking")
-				TrackSales.db:AddGold(matchedProfession, gold)
-				return 				
+			if matchedProfession then
+				TrackSales.db:AddGold(matchedProfession, gold)				 				
+				return
 			end
 
 			if i == MAX_TRADE_ITEMS then 
