@@ -7,6 +7,7 @@
 
 embeds.xml
 TrackSales.lua
+ChatCommands.lua
 Database.lua
 Helpers.lua
 Items\Alchemy.lua
