@@ -321,3 +321,60 @@ function TrackSales.db:Clear()
 	self:Print("Database cleared")
 
 end 
+
+function TrackSales.db:RunTests()
+	
+	DEFAULT_CHAT_FRAME.editBox:SetText("/ts t fishing a")
+	ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+	
+	self:TestResult("Add Fishing")		
+	
+	DEFAULT_CHAT_FRAME.editBox:SetText("/ts b fishing a 20000")
+	ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+	
+	self:TestResult("Add 2 gold to fishing")
+
+	DEFAULT_CHAT_FRAME.editBox:SetText("/ts b fishing s 10000")
+	ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+	
+	self:TestResult("Subtract 1 gold from fishing")
+
+	DEFAULT_CHAT_FRAME.editBox:SetText("/ts b fishing set 5000")
+	ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+	
+	self:TestResult("Set fishing to 50 silver")
+
+	DEFAULT_CHAT_FRAME.editBox:SetText("/ts t cooking a")
+	ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+	
+	self:TestResult("Add Cooking")
+
+
+	DEFAULT_CHAT_FRAME.editBox:SetText("/ts d o 21")
+	ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+	
+	self:TestResult("Reorder")
+
+	DEFAULT_CHAT_FRAME.editBox:SetText("/ts d cooking hide")
+	ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+	
+	self:TestResult("Hide Cooking")
+
+	DEFAULT_CHAT_FRAME.editBox:SetText("/ts d cooking show")
+	ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+	
+	self:TestResult("show Cooking")
+
+	DEFAULT_CHAT_FRAME.editBox:SetText("/ts t cooking r")
+	ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+	
+	self:TestResult("remove cooking")
+end
+
+function TrackSales.db:TestResult(test)
+	self:Print(test)
+	self:Print("--------")
+	DEFAULT_CHAT_FRAME.editBox:SetText("/ts")
+	ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
+	self:Print("--------")
+end
