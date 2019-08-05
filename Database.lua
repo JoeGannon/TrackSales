@@ -252,54 +252,23 @@ function TrackSales.db:SetDefaults()
 		Professions = {	}	 
 	 }
 
-	local professions = self:LookupProfessions()	
-
-	for index, value in ipairs(professions) do 
-		if value.Name then
-			table.insert(TrackSalesDB.Professions, value)
-		end
-	end
-end
-
-function TrackSales.db:LookupProfessions()	
-
-	--todo this api isn't available in classic, https://wow.gamepedia.com/Global_functions/Classic
-	local prof1, prof2, sec1, sec2, sec3, sec4 = GetProfessions()	
-
-	-- for skillIndex = 1, GetNumSkillLines() do
-	-- 	local skillName, isHeader, isExpanded, skillRank, numTempPoints, skillModifier,
-	-- 	  skillMaxRank, isAbandonable, stepCost, rankCost, minLevel, skillCostType,
-	-- 	  skillDescription = GetSkillLineInfo(skillIndex)
-	-- 	if not isHeader then
-	-- 	   print(string.format("Skill: %s - %s", skillName, skillRank))
-	-- 	end
-	-- end
-	
-	local prof1Name = self:GetProfessionName(prof1)
-	local prof2Name = self:GetProfessionName(prof2)
-	local sec1Name = self:GetProfessionName(sec1)
-	local sec2Name = self:GetProfessionName(sec2)
-	local sec3Name = self:GetProfessionName(sec3)
-	local sec4Name = self:GetProfessionName(sec4)
-
-	return {
-		{ Name = prof1Name, GoldMade = 0, IsVisible = true },
-		{ Name = prof2Name, GoldMade = 0, IsVisible = true },
-		{ Name = sec1Name,  GoldMade = 0, IsVisible = true },
-		{ Name = sec2Name,  GoldMade = 0, IsVisible = true },
-		{ Name = sec3Name,  GoldMade = 0, IsVisible = true },
-		{ Name = sec4Name,  GoldMade = 0, IsVisible = true },
-	}
-end
-
-function TrackSales.db:GetProfessionName(index)
-	if index then
-		local name = GetProfessionInfo(index)
+	 for skillIndex = 1, GetNumSkillLines() do
 		
-		return name
-	else 
-		return nil
-	end
+		local skillName, isHeader, _, skillRank = GetSkillLineInfo(skillIndex)
+		
+		 --check prof list
+		  if not isHeader then
+
+			local profession =  {
+				  Name = skillName,
+				  GoldMade = 0, 
+				  IsVisible = true 
+				}
+
+		   --table.insert(TrackSalesDB.Professions, profession)
+		   self:Print(skillName, skillRank)
+		end
+	end		
 end
 
 function TrackSales.db:MaxOrderIndex()	

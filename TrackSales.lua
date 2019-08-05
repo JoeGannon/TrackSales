@@ -13,8 +13,8 @@ function TrackSales:OnInitialize()
 	local frame = CreateFrame("Frame")
 	frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
 	frame:RegisterEvent("TRADE_ACCEPT_UPDATE")	
-	frame:SetScript("OnEvent", function(this, event, ...)
-		TrackSales[event](TrackSales, ...) end)
+	frame:SetScript("OnEvent", function(self, event, ...)		
+		return self[event](self, ...) end)
 end
 
 function TrackSales:OnEnable()	
