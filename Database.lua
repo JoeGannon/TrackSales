@@ -161,26 +161,26 @@ function TrackSales.db:OrderProfessions(order)
 		end		
 	end)	
 	
-	local visibleProfs = self:MaxIndex(true)
+	local maxIndex = self:MaxOrderIndex()
 
 	if hasDupes then 
 		self:Print("Found duplicate Indexes! Must specify each index once")
 		return
 	end
-	if items > visibleProfs then
+	if items > maxIndex then
 		self:Print("Too many Indexes provivded!")
-		self:Print("There are only "..visibleProfs.." visible Indexes. You provided "..items)
+		self:Print("There are only "..maxIndex.." visible Indexes. You provided "..items)
 		return 
 	end
-	if items < visibleProfs then
+	if items < maxIndex then
 		self:Print("Too few Indexes provivded!")
-		self:Print("There are "..visibleProfs.." visible Indexes. You provided "..items)
+		self:Print("There are "..maxIndex.." visible Indexes. You provided "..items)
 		return 
 	end	
 	
 	for index, value in ipairs(indexes) do 
 	
-		if tonumber(value) > visibleProfs then 
+		if tonumber(value) > maxIndex then 
 			self:Print("Invalid Index "..value)
 			return
 		end		
@@ -302,29 +302,15 @@ function TrackSales.db:GetProfessionName(index)
 	end
 end
 
-function TrackSales.db:GetProfessionByIndex(idx)
-	local val = ""
+function TrackSales.db:MaxOrderIndex()	
+	local i = 0
 	
 	for index, value in ipairs(TrackSalesDB.Professions) do 
-	   if index == tonumber(idx) then
-			val = value.Name
-	   end
+		if value.IsVisible then 
+			i = i + 1
+		end		
 	end
 
-	return val
-end
-
-function TrackSales.db:MaxIndex(visibleOnly)	
-	local i = 0
-	for index, value in ipairs(TrackSalesDB.Professions) do 
-
-		if visibleOnly and value.IsVisible then 
-			i = i + 1
-		end
-		if not visibleOnly then 
-			i = i + 1
-		end
-	end
 	return i
 end
 

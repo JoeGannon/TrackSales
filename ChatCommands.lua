@@ -80,21 +80,11 @@ function ts:HandleCommand(...)
 		self:PrintBalanceHelp()
 		return 
     end
-    
+	
+	local validCommand, profession = self:IsValidConfigCommand(arg1, arg2, arg3, arg4)
     --/ts b 1 a 705025
 	--/ts b Fishing a 705025
-	if self:IsValidConfigCommand(arg1, arg2, arg3, arg4) then		
-		
-		arg2 = TrackSales.db:ConsoleHack(arg2)
-
-		local profession = TrackSales.db:FindTrackedProfession(arg2)		
-		
-		if not profession then 
-		 	profession = TrackSales.db:GetProfessionByIndex(arg2)		
-		end
-
-		local name = profession.Name
-
+	if validCommand then		
 		local cmd = arg3
 		local gold = arg4		
 
@@ -104,20 +94,20 @@ function ts:HandleCommand(...)
 
 		if ts:IsAddCommand(cmd) then 			
 
-			TrackSales.db:AddGold(name, gold)
-			TrackSales:PrintMessage("Added "..GetCoinTextureString(gold).." to "..name)		
+			TrackSales.db:AddGold(profession, gold)
+			TrackSales:PrintMessage("Added "..GetCoinTextureString(gold).." to "..profession)		
 		end
 
 		if ts:IsSubtractCommand(cmd) then 			
 		
-			TrackSales.db:SubtractGold(name, gold)
-			TrackSales:PrintMessage("Subtracted "..GetCoinTextureString(gold).." from "..name)
+			TrackSales.db:SubtractGold(profession, gold)
+			TrackSales:PrintMessage("Subtracted "..GetCoinTextureString(gold).." from "..profession)
 		end		
 
 		if ts:IsSetCommand(cmd) then 			
 		
-			TrackSales.db:SetGold(name, gold)
-			TrackSales:PrintMessage("Set "..name.." to "..GetCoinTextureString(gold))
+			TrackSales.db:SetGold(profession, gold)
+			TrackSales:PrintMessage("Set "..profession.." to "..GetCoinTextureString(gold))
 		end		
 
 		return 
@@ -127,12 +117,15 @@ end
 function ts:IsValidConfigCommand(...)
 	
 	local option, arg2, arg3, arg4 = ...
-	
-	local maxIndex = TrackSales.db:MaxIndex()
 
 	local idx = tonumber(arg2)
 	local gold = tonumber(arg4)
  
+	if not gold then
+		TrackSales:PrintMessage("Invalid Gold Amount: "..arg4) 
+		return false
+	end
+
 	if not ts:IsBalanceCommand(option) or not gold  then
 		TrackSales:PrintMessage("Invalid Command!")
 		TrackSales:PrintMessage(option, arg2, arg3, arg4)
@@ -143,8 +136,8 @@ function ts:IsValidConfigCommand(...)
 
 	local profession = TrackSales.db:FindTrackedProfession(arg2)	
 	
-	if (not (idx and gold) or idx < 1 or idx > maxIndex) and not profession then 
-		TrackSales:PrintMessage("Invalid profession or gold amount!")
+	if not profession then 
+		TrackSales:PrintMessage("Profession not found: "..arg2)
 		return false
 	end	
 
@@ -153,7 +146,7 @@ function ts:IsValidConfigCommand(...)
 		return false
 	end		
 
-	return true
+	return true, profession.Name
 end
 
 function ts:PrintSales(showHidden)		
