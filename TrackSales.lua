@@ -91,13 +91,12 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 
 			local matchedProfession = TrackSales.db:MatchProfession(itemName)
 			
-			if matchedProfession then
+			if matchedProfession and i ~= MAX_TRADE_ITEMS then
 				TrackSales.db:AddGold(matchedProfession, gold)				 				
 				return
 			end
 
-			if i == MAX_TRADE_ITEMS then 
-				_, _, _, _, _, enchantment = GetTradeTargetItemInfo(i)
+			if i == MAX_TRADE_ITEMS then
 
 				if enchantment then 
 					self:Print("Adding Enchanting")
