@@ -59,7 +59,7 @@ function TrackSales:AutoLootMailItem(...)
 	self:TakeInboxMoney(...)
 end
 
---do to limitations of the client, https://wowwiki.fandom.com/wiki/Events/Trade#TRADE_ACCEPT_UPDATE
+--due to limitations of the client, https://wowwiki.fandom.com/wiki/Events/Trade#TRADE_ACCEPT_UPDATE
 --it's not guaranteed TRADE_ACCEPT_UPDATE will fire with both Player and Target having "accepted"
 --this is a hack in an attempt to not double count transactions through trade
 local recordedTrades = { }
@@ -76,7 +76,7 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 		local targetName = UnitName("target")
 	
 		for i, v in ipairs(recordedTrades) do
-			if v.Target == targetName and v.Gold == gold and GetTime() - v.Time < 150 then 
+			if v.Target == targetName and v.Gold == gold and time - v.Time < 150 then 
 				--assume transaction was already recorded
 				self:Print("Recorded")
 				return 
