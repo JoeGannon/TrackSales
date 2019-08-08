@@ -1,5 +1,5 @@
 ## Interface: 11302
-## Version: 0.0.1
+## Version: 0.1.0
 ## Title: TrackSales
 ## Notes: Track Gold made through Professions from Auction House and Trade sales
 ## Author: Joe Gannon
