@@ -318,6 +318,9 @@ function TrackSales.db:RunTests()
 	
 	self:TestResult("Add Cooking")
 
+	self:TrackSale("Coyote Steak", 10000)
+
+	self:TestResult("Add Tracked Cooking")
 
 	DEFAULT_CHAT_FRAME.editBox:SetText("/ts d o 21")
 	ChatEdit_SendText(DEFAULT_CHAT_FRAME.editBox, 0)
