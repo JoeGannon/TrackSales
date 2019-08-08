@@ -13,8 +13,16 @@ function TrackSales:OnInitialize()
 	local frame = CreateFrame("Frame")
 	frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
 	frame:RegisterEvent("TRADE_ACCEPT_UPDATE")	
-	frame:SetScript("OnEvent", function(self, event, ...)		
-		return self[event](self, ...) end)
+	
+	local function OnEvent(s, event, ...)
+		if event == "TRADE_ACCEPT_UPDATE" then 
+			self:TRADE_ACCEPT_UPDATE(...)
+		elseif event == "LEARNED_SPELL_IN_TAB" then 
+			self:LEARNED_SPELL_IN_TAB(...)
+		end
+	end
+
+	frame:SetScript("OnEvent", OnEvent)
 end
 
 function TrackSales:OnEnable()	
@@ -31,7 +39,6 @@ function TrackSales:TakeInboxMoney(...)
 	local invoiceType, itemName, playerName, bid, buyout, deposit, consignment = GetInboxInvoiceInfo(mailIndex)
 
 	if invoiceType and invoiceType == "seller" then
-		self:Print(itemName)
 		TrackSales.db:TrackSale(itemName, bid)
 	else 
 
@@ -70,15 +77,12 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 	
 	if playerAccepted == 1 and gold > 0 then
 
-		self:Print("accepted")
-
 		local time = GetTime()
 		local targetName = UnitName("target")
 	
 		for i, v in ipairs(recordedTrades) do
 			if v.Target == targetName and v.Gold == gold and time - v.Time < 150 then 
 				--assume transaction was already recorded
-				self:Print("Recorded")
 				return 
 			end
 		end		
@@ -98,8 +102,7 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 
 			if i == MAX_TRADE_ITEMS then
 
-				if enchantment then 
-					self:Print("Adding Enchanting")
+				if enchantment then 					
 					TrackSales.db:AddGold("Enchanting", gold)
 				end
 			end
@@ -107,12 +110,28 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 	end
 end
 
+local professions = {
+	{ SpellId = 2259, Profession = "Alchemy" },
+	{ SpellId = 2018, Profession = "Blacksmithing" },
+	{ SpellId = 7411, Profession = "Enchanting" },
+	{ SpellId = 4036, Profession = "Engineering" },
+	{ SpellId = 2580, Profession = "Mining" },
+	{ SpellId = 2383, Profession = "Herbalism" },
+	{ SpellId = 2108, Profession = "Leatherworking" },
+	{ SpellId = 3908, Profession = "Tailoring" },
+	{ SpellId = 8613, Profession = "Skinning" },
+	{ SpellId = 3273, Profession = "First Aid" },
+	{ SpellId = 2550, Profession = "Cooking" },
+	{ SpellId = 7620, Profession = "Fishing" }
+}
+
 function TrackSales:LEARNED_SPELL_IN_TAB(...)
 	local spellId = ...
-
-	local skillName = GetSpellInfo(spellId)	
-
-	TrackSales.db:TryAddNewProfession(skillName)	
+	for index, value in ipairs(professions) do 
+        if value.SpellId == spellId then
+			TrackSales.db:TryAddNewProfession(value.Profession)
+        end
+    end
 end
 
 function TrackSales:SlashCommands(args)

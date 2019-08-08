@@ -51,9 +51,9 @@ local professions = {
 	"Blacksmithing",
 	"Enchanting",
 	"Engineering",
-	"Herbalism Skills",
+	"Herbalism",
 	"Leatherworking",
-	"Mining Skills",
+	"Mining",
 	"Skinning",
 	"Tailoring",
 	"Cooking",
@@ -74,12 +74,7 @@ function TrackSales.db:TryAddNewProfession(profession, log)
 	profession = self:ConsoleHack(profession, true)
 
 	for index, value in ipairs(professions) do
-		if value == profession then			
-
-			if (string.match(profession, "Skills")) then			
-				profession = string.sub(profession, 0, string.len(profession) - 7)				
-			end
-
+		if value == profession then		
 			local prof = { 
 					Name = profession,
 					GoldMade = 0,
@@ -88,7 +83,7 @@ function TrackSales.db:TryAddNewProfession(profession, log)
 			
 			table.insert(TrackSalesDB.Professions, prof)
 
-			self:Print("Now tracking "..prof.Name)
+			TrackSales:PrintMessage("Now tracking "..prof.Name)
 			return
 		end	
 	end	
@@ -214,23 +209,14 @@ function TrackSales.db:OrderProfessions(order)
 	return true
 end
 
---hack to allow /ts p a FirstAid
+--hack to allow /ts p FirstAid a
 --First Aid is parsed as 2 arguments
 function TrackSales.db:ConsoleHack(arg, superHack)	
-		
 	arg = arg:gsub("^%l", string.upper)
 
 	if string.lower(arg) == "firstaid" then
 		arg = "First Aid"
-	end
-	if superHack then
-		if arg == "Herbalism" then
-			arg = "Herbalism Skills"
-		end
-		if arg == "Mining" then
-			arg = "Mining Skills"
-		end
-	end
+	end	
 
 	return arg
 end
@@ -253,20 +239,14 @@ function TrackSales.db:SetDefaults()
 	 }
 
 	 for skillIndex = 1, GetNumSkillLines() do
-		
-		local skillName, isHeader, _, skillRank = GetSkillLineInfo(skillIndex)
-		
-		 --check prof list
-		  if not isHeader then
-
+		local skillName, isHeader = GetSkillLineInfo(skillIndex)
+		  if not isHeader and ts:ContainsItem(professions, skillName) then
 			local profession =  {
 				  Name = skillName,
 				  GoldMade = 0, 
 				  IsVisible = true 
 				}
-
-		   --table.insert(TrackSalesDB.Professions, profession)
-		   self:Print(skillName, skillRank)
+		   table.insert(TrackSalesDB.Professions, profession)		   
 		end
 	end		
 end
