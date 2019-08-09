@@ -6,7 +6,7 @@ Tracks Sales from AH, COD Payments, and Trades.
 If the sale involves a "profession item" (ore for mining, bags for tailoring, etc) it automatically adds the sale to your total 
 for that profession. Run `/ts` or `/tracksales` to see the report. Run `/ts help` for more options.
 
-![Thumbnail](https://github.com/JoeGannon/TrackSales/blob/master/TrackSalesThumb.png)
+![Thumbnail](https://github.com/JoeGannon/TrackSales/blob/master/Preview.png)
 
 Features
  - automatically track AH, COD Payments, and Trades
