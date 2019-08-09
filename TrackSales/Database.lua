@@ -27,8 +27,6 @@ function TrackSales.db:AddGold(profession, gold)
 
 		return
 	end
-
-	self:Print("Profession Not Found "..profession)
 end
 
 function TrackSales.db:SubtractGold(profession, gold)
