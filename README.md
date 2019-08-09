@@ -1,4 +1,4 @@
-# TrackSales
+# Track Sales
 Tracks Sales from AH, COD Payments, and Trades.
 
 If the sale involves a "profession item" (ore for mining, bags for tailoring, etc) it automatically adds the sale to your total 
