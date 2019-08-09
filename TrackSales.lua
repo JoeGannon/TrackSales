@@ -94,10 +94,9 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 
 		for i = 1, MAX_TRADE_ITEMS, 1 do 
 			self:Print(i)
-			local itemName, _, _, _, _, enchantment = GetTradeTargetItemInfo(i)
+			local itemName, _, _, _, _, _ = GetTradePlayerItemInfo(i)
 			self:Print("TestA")
-			self:Print(enchantment)
-			self:Print(itemName)
+			
 			self:Print("TestB")
 
 			local matchedProfession = ts:MatchProfession(itemName)
@@ -105,12 +104,14 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 			self:Print("Matched", matchedProfession)
 
 			if matchedProfession and i ~= MAX_TRADE_ITEMS then
-				TrackSales.db:AddGold(matchedProfession, gold)				 				
+				TrackSales.db:AddGold(matchedProfession, gold)			
 				return
 			end
 
-			if i == MAX_TRADE_ITEMS then
-				if enchantment then 					
+			if i == MAX_TRADE_ITEMS then				
+				local _, _, _, _, _, enchantment = GetTradeTargetItemInfo(i)
+				
+				if enchantment then
 					TrackSales.db:AddGold("Enchanting", gold)
 				end
 			end
