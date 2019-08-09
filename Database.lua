@@ -6,7 +6,9 @@ function TrackSales.db:TrackSale(item, gold)
 
 	local matchedProfession = ts:MatchProfession(item)
 
-	self:AddGold(matchedProfession, gold)
+	if matchedProfession ~= nil then 
+		self:AddGold(matchedProfession, gold)
+	end
 end
 
 function TrackSales.db:AddGold(profession, gold)
@@ -100,7 +102,7 @@ function TrackSales.db:RemoveProfession(profession)
 	for index, value in ipairs(TrackSalesDB.Professions) do
 		if (value.Name == profession) then 
 			table.remove(TrackSalesDB.Professions, index)
-			self:Print(profession.." removed")
+			TrackSales:PrintMessage(profession.." removed")
 			return
 		end
 	end
@@ -131,7 +133,7 @@ function TrackSales.db:HideProfession(profession)
 	 
 	 if prof then		
 		prof.IsVisible = false
-		self:Print(profession.." is now hidden")
+		TrackSales:PrintMessage(profession.." is now hidden")
 		return		
 	 end
 
@@ -159,24 +161,24 @@ function TrackSales.db:OrderProfessions(order)
 	local maxIndex = self:MaxOrderIndex()
 
 	if hasDupes then 
-		self:Print("Found duplicate Indexes! Must specify each index once")
+		TrackSales:PrintMessage("Found duplicate Indexes! Must specify each index once")
 		return
 	end
 	if items > maxIndex then
-		self:Print("Too many Indexes provivded!")
-		self:Print("There are only "..maxIndex.." visible Indexes. You provided "..items)
+		TrackSales:PrintMessage("Too many Indexes provivded!")
+		TrackSales:PrintMessage("There are only "..maxIndex.." visible Indexes. You provided "..items)
 		return 
 	end
 	if items < maxIndex then
-		self:Print("Too few Indexes provivded!")
-		self:Print("There are "..maxIndex.." visible Indexes. You provided "..items)
+		TrackSales:PrintMessage("Too few Indexes provivded!")
+		TrackSales:PrintMessage("There are "..maxIndex.." visible Indexes. You provided "..items)
 		return 
 	end	
 	
 	for index, value in ipairs(indexes) do 
 	
 		if tonumber(value) > maxIndex then 
-			self:Print("Invalid Index "..value)
+			TrackSales:PrintMessage("Invalid Index "..value)
 			return
 		end		
 	end

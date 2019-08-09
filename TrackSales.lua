@@ -14,6 +14,8 @@ function TrackSales:OnInitialize()
 	frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
 	frame:RegisterEvent("TRADE_ACCEPT_UPDATE")	
 	
+	--todo this isn't efficient,
+	--everything else I tried didn't work
 	local function OnEvent(s, event, ...)
 		if event == "TRADE_ACCEPT_UPDATE" then 
 			self:TRADE_ACCEPT_UPDATE(...)
@@ -75,11 +77,12 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 	local playerAccepted, _ = ...
 	local gold = GetTargetTradeMoney()
 	
+	self:Print(playerAccepted, gold)
 	if playerAccepted == 1 and gold > 0 then
 
 		local time = GetTime()
 		local targetName = UnitName("target")
-	
+
 		for i, v in ipairs(recordedTrades) do
 			if v.Target == targetName and v.Gold == gold and time - v.Time < 150 then 
 				--assume transaction was already recorded
@@ -90,18 +93,23 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 		table.insert(recordedTrades, { Target = targetName, Gold = gold, Time = time })
 
 		for i = 1, MAX_TRADE_ITEMS, 1 do 
-			
-			local itemName, _, _, _, _, enchantment = GetTradePlayerItemInfo(i)
+			self:Print(i)
+			local itemName, _, _, _, _, enchantment = GetTradeTargetItemInfo(i)
+			self:Print("TestA")
+			self:Print(enchantment)
+			self:Print(itemName)
+			self:Print("TestB")
 
-			local matchedProfession = TrackSales.db:MatchProfession(itemName)
+			local matchedProfession = ts:MatchProfession(itemName)
 			
+			self:Print("Matched", matchedProfession)
+
 			if matchedProfession and i ~= MAX_TRADE_ITEMS then
 				TrackSales.db:AddGold(matchedProfession, gold)				 				
 				return
 			end
 
 			if i == MAX_TRADE_ITEMS then
-
 				if enchantment then 					
 					TrackSales.db:AddGold("Enchanting", gold)
 				end
