@@ -118,7 +118,7 @@ function TrackSales.db:ShowProfession(profession)
 
 	if prof then 
 		prof.IsVisible = true
-		self:Print(profession.." is now shown")
+		TrackSales:PrintMessage(profession.." is now shown")
 		return
 	end
 
