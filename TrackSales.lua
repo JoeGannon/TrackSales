@@ -93,16 +93,10 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 		table.insert(recordedTrades, { Target = targetName, Gold = gold, Time = time })
 
 		for i = 1, MAX_TRADE_ITEMS, 1 do 
-			self:Print(i)
 			local itemName, _, _, _, _, _ = GetTradePlayerItemInfo(i)
-			self:Print("TestA")
-			
-			self:Print("TestB")
-
+		
 			local matchedProfession = ts:MatchProfession(itemName)
 			
-			self:Print("Matched", matchedProfession)
-
 			if matchedProfession and i ~= MAX_TRADE_ITEMS then
 				TrackSales.db:AddGold(matchedProfession, gold)			
 				return
