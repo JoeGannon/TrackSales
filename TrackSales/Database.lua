@@ -43,7 +43,7 @@ function TrackSales.db:SetGold(profession, gold)
 		return 
 	end
 
-   self:Print("Profession Not Found "..profession)
+	TrackSales:PrintMessage("Profession Not Found "..profession)
 end
 
 local professions = {

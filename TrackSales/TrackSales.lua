@@ -77,7 +77,6 @@ function TrackSales:TRADE_ACCEPT_UPDATE(...)
 	local playerAccepted, _ = ...
 	local gold = GetTargetTradeMoney()
 	
-	self:Print(playerAccepted, gold)
 	if playerAccepted == 1 and gold > 0 then
 
 		local time = GetTime()
