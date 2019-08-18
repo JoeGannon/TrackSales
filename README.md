@@ -17,3 +17,5 @@ Features
  - COD Payments: use the item name from the subject of the mail (the client automatically adds this) 
  - Trades: If a trade includes multiple profession items, the first one found will be used to track the trade. 
  - Trades: Multiple trades with the same character, for the same gold amount, within 2.5 minutes will only be tracked once, see [client limitations](https://github.com/JoeGannon/TrackSales/blob/master/TrackSales/TrackSales.lua#L71-L73) 
+
+Download at [Curse](https://www.curseforge.com/wow/addons/tracksales) and [WoWInterface](https://www.wowinterface.com/downloads/info25093-TrackSales.html)
