@@ -95,7 +95,7 @@ ts.tailoringItems = {
 "Frostweave Pants",
 "Frostweave Robe",
 "Frostweave Tunic",
-"Gaea",
+"Gaea's Embrace",
 "Ghostweave Belt",
 "Ghostweave Gloves",
 "Ghostweave Pants",
