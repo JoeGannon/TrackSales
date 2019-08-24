@@ -127,8 +127,9 @@ function ts:MatchProfession(item)
 end
 
 function ts:ContainsItem(list, item)
+    
     for index, value in ipairs(list) do 
-        if (value == item) then
+        if value == item then
             return true
         end
     end

@@ -7,8 +7,8 @@ function TrackSales:OnInitialize()
 	self:SecureHook("TakeInboxMoney")
 	self:SecureHook("AutoLootMailItem")	
 
-	TrackSales:RegisterChatCommand("ts", "SlashCommands")
-	TrackSales:RegisterChatCommand("tracksales", "SlashCommands")
+	self:RegisterChatCommand("ts", "SlashCommands")
+	self:RegisterChatCommand("tracksales", "SlashCommands")
 
 	local frame = CreateFrame("Frame")
 	frame:RegisterEvent("LEARNED_SPELL_IN_TAB")
@@ -35,16 +35,16 @@ function TrackSales:OnEnable()
 	end
 end
 
-function TrackSales:TakeInboxMoney(...)
-	local mailIndex  = ...
+function TrackSales:TakeInboxMoney(mailId)	
 
-	local invoiceType, itemName, playerName, bid, buyout, deposit, consignment = GetInboxInvoiceInfo(mailIndex)
+	local invoiceType, itemName, _, bid = GetInboxInvoiceInfo(mailId)
 
-	if invoiceType and invoiceType == "seller" then
+	if invoiceType == "seller" then
+
 		TrackSales.db:TrackSale(itemName, bid)
 	else 
 
-		local _, _, sender, subject, money = GetInboxHeaderInfo(mailIndex)	
+		local _, _, sender, subject, money = GetInboxHeaderInfo(mailId)	
 
 		--assume it's a COD
 		if money > 0  then 
@@ -64,8 +64,8 @@ function TrackSales:TakeInboxMoney(...)
 	end
 end 
 
-function TrackSales:AutoLootMailItem(...)
-	self:TakeInboxMoney(...)
+function TrackSales:AutoLootMailItem(mailId)
+	self:TakeInboxMoney(mailId)
 end
 
 --due to limitations of the client, https://wowwiki.fandom.com/wiki/Events/Trade#TRADE_ACCEPT_UPDATE

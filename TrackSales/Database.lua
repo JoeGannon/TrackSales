@@ -98,7 +98,7 @@ function TrackSales.db:RemoveProfession(profession)
 	profession = self:ConsoleHack(profession) 		
 
 	for index, value in ipairs(TrackSalesDB.Professions) do
-		if (value.Name == profession) then 
+		if value.Name == profession then 
 			table.remove(TrackSalesDB.Professions, index)
 			TrackSales:PrintMessage(profession.." removed")
 			return
@@ -143,13 +143,13 @@ function TrackSales.db:OrderProfessions(order)
 	local items = 0;
 	local indexes = { }
 	local hasDupes = false			
- 	local test = false
 	order:gsub(".", function(idx)
 		items = items + 1
 		local dupes = ts:ContainsItem(indexes, idx)		
 		
 		table.insert(indexes, idx)	
 		
+		--idk why but this had to get weird
 		if dupes then 			
 			hasDupes = true
 			return
