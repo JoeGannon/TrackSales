@@ -1,11 +1,11 @@
-TrackSales = LibStub("AceAddon-3.0"):NewAddon("TrackSales", "AceConsole-3.0", "AceHook-3.0")
+TrackSales = LibStub("AceAddon-3.0"):NewAddon("TrackSales", "AceConsole-3.0")
 
 local _, ts = ...
 
 function TrackSales:OnInitialize()				
 
-	self:SecureHook("TakeInboxMoney")
-	self:SecureHook("AutoLootMailItem")	
+	hooksecurefunc("TakeInboxMoney", function(...) TrackSales:TakeInboxMoney(...) end)
+	hooksecurefunc("AutoLootMailItem", function(...) TrackSales:AutoLootMailItem(...) end)
 
 	self:RegisterChatCommand("ts", "SlashCommands")
 	self:RegisterChatCommand("tracksales", "SlashCommands")
