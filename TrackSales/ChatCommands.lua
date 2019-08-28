@@ -150,14 +150,30 @@ function ts:IsValidConfigCommand(...)
 end
 
 function ts:PrintSales(showHidden)		
+	
 	local isEmpty = true
+	local maxNameLength = 0
+
+	for index, value in ipairs(TrackSalesDB.Professions) do 
+		local len = string.len(value.Name)
+		if maxNameLength < len then
+			maxNameLength = len
+		end
+	end
 	
 	for index, value in ipairs(TrackSalesDB.Professions) do 
 		isEmpty = false
+	
 		local coinTexture = GetCoinTextureString(value.GoldMade)	
-		
+		local padding = maxNameLength - string.len(value.Name)
+		local pad = ""
+
+		for i = 1, padding, 1 do			
+			pad = pad.."  "			
+		end		
+	
 		if showHidden or value.IsVisible then 
-			TrackSales:PrintMessage(value.Name.."       "..coinTexture)
+			TrackSales:PrintMessage(value.Name..pad.."    "..coinTexture)
 		end		
 	end	
 
