@@ -136,7 +136,7 @@ ts.enchantingItems = {
 "Enchant Weapon - Unholy Weapon",
 "Enchant Weapon - Winter",
 "Enchanted Leather",
-"Enchanted Thorium",
+"Enchanted Thorium Bar",
 "Greater Magic Wand",
 "Greater Mystic Wand",
 "Lesser Magic Wand",

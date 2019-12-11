@@ -236,13 +236,5 @@ ts.tailoringItems = {
 "Woolen Bag",
 "Woolen Boots",
 "Woolen Cape",
-
---Adding Cloths
-"Linen Cloth",
-"Wool Cloth",
-"Silk Cloth", 
-"Mageweave Cloth",
-"Runecloth",
-"Felcloth",
 "Mooncloth"
 }
