@@ -1,5 +1,5 @@
-## Interface: 11302
-## Version: 0.1.4
+## Interface: 11303
+## Version: 0.1.5
 ## Title: Track Sales
 ## Notes: Track Gold made through Professions from Auction House, Trades, and COD payments
 ## Author: Joe Gannon
